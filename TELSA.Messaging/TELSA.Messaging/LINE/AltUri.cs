@@ -1,4 +1,4 @@
-﻿namespace TELSA.Messaging.LINE.Actions
+﻿namespace TELSA.Messaging.LINE
 {
     /// <summary>
     /// URI opened on LINE for macOS and Windows when the action is performed (Max character limit: 1000)

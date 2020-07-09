@@ -10,6 +10,8 @@
   <ItemGroup>
     <Folder Include="LINE\" />
     <Folder Include="LINE\Actions\" />
+    <Folder Include="LINE\Imagemap\" />
+    <Folder Include="LINE\Imagemap\Actions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Class1.cs" />
