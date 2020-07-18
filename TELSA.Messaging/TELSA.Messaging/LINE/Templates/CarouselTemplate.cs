@@ -46,12 +46,12 @@ namespace TELSA.Messaging.LINE.Templates
         /// 
         /// Default: rectangle
         /// </summary>
-        public ImageAspectRatio ImageAspectRatio { get; set; }
+        public ImageAspectRatio? ImageAspectRatio { get; set; }
 
         /// <summary>
         /// Size of the image.
         /// Default: <see cref="ImageSize.Cover"/>
         /// </summary>
-        public ImageSize ImageSize { get; set; }
+        public ImageSize? ImageSize { get; set; }
     }
 }
