@@ -17,7 +17,7 @@
         /// <param name="initial"><see cref="Initial"/></param>
         /// <param name="max"><see cref="Max"/></param>
         /// <param name="min"><see cref="Min"/></param>
-        public DatetimePickerAction(string data, string mode, string label, string initial, string max, string min)
+        public DatetimePickerAction(string data, ActionMode mode, string label, string initial, string max, string min)
         {
             Data = data;
             Mode = mode;
@@ -47,7 +47,6 @@
         public string Data { get; set; }
 
         /// <summary>
-        /// todo: 改成列舉
         /// Action mode<br/>
         /// date: Pick date<br/>
         /// time: Pick time<br/>
@@ -65,23 +64,21 @@
         ///
         /// full-dateTtime-hour:time-minute or full-datettime-hour:time-minute
         /// Max: 2100-12-31T23:59
-        /// Min: 1900-01-01T00:00/// </remarks>
-        public string Mode { get; set; }
+        /// Min: 1900-01-01T00:00
+        /// </remarks>
+        public ActionMode Mode { get; set; }
 
         /// <summary>
-        /// todo: 想想看怎麼塑模
         /// Initial value of date or time
         /// </summary>
         public string Initial { get; set; }
 
         /// <summary>
-        /// todo: 想想看怎麼塑模
         /// Largest date or time value that can be selected. Must be greater than the min value.
         /// </summary>
         public string Max { get; set; }
 
         /// <summary>
-        /// todo: 想想看怎麼塑模
         /// Smallest date or time value that can be selected. Must be less than the max value.
         /// </summary>
         public string Min { get; set; }
