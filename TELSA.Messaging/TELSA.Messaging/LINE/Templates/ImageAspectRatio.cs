@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace TELSA.Messaging.LINE
+namespace TELSA.Messaging.LINE.Templates
 {
     /// <summary>
     /// Aspect ratio of the image.
