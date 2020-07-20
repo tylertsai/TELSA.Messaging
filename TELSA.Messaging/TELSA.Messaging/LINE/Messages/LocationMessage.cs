@@ -27,13 +27,13 @@
         public override string Type { get => "location"; }
 
         /// <summary>
-        /// Title
+        /// Title<br/>
         /// Max character limit: 100
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Address
+        /// Address<br/>
         /// Max character limit: 100
         /// </summary>
         public string Address { get; set; }

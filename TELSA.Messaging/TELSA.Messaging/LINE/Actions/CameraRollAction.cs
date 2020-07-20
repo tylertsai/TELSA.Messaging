@@ -21,7 +21,7 @@
         public string Type { get => "cameraRoll"; }
 
         /// <summary>
-        /// Label for the action
+        /// Label for the action<br/>
         /// Max character limit: 20
         /// </summary>
         public string Label { get; set; }

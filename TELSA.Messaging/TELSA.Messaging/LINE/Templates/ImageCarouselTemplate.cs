@@ -24,7 +24,7 @@ namespace TELSA.Messaging.LINE.Templates
         public string Type { get => "image_carousel"; }
 
         /// <summary>
-        /// Array of columns
+        /// Array of columns<br/>
         /// Max columns: 10
         /// </summary>
         public IList<ImageCarouselColumn> Columns { get; set; }

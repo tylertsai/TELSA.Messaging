@@ -7,8 +7,8 @@ namespace TELSA.Messaging.LINE.Templates
     /// Template with two action buttons.
     /// </summary>
     /// <remarks>
-    /// Because of the height limitation for confirm template messages, the lower part of the text display area will get cut off if the height limitation is exceeded. For this reason, depending on the character width, the message text may not be fully displayed even when it is within the character limits.
-    /// 
+    /// Because of the height limitation for confirm template messages, the lower part of the text display area will get cut off if the height limitation is exceeded. For this reason, depending on the character width, the message text may not be fully displayed even when it is within the character limits.<br/>
+    /// <br/>
     /// See <a href="https://developers.line.biz/en/reference/messaging-api/#confirm">Here</a>.
     /// </remarks>
     public class ConfirmTemplate : ITemplate
@@ -28,13 +28,13 @@ namespace TELSA.Messaging.LINE.Templates
         public string Type { get => "confirm"; }
 
         /// <summary>
-        /// Message text
+        /// Message text<br/>
         /// Max character limit: 240
         /// </summary>
         public string Text { get; set; }
 
         /// <summary>
-        /// Action when tapped
+        /// Action when tapped<br/>
         /// Set 2 actions for the 2 buttons
         /// </summary>
         public IList<IAction> Actions { get; set; }

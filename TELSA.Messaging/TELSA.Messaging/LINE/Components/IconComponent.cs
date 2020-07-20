@@ -1,6 +1,4 @@
-﻿using TELSA.Messaging.LINE.Actions;
-
-namespace TELSA.Messaging.LINE.Components
+﻿namespace TELSA.Messaging.LINE.Components
 {
     /// <summary>
     /// This component renders an icon for decorating the adjacent text.<br/>
@@ -26,7 +24,7 @@ namespace TELSA.Messaging.LINE.Components
         public string Type { get => "icon"; }
 
         /// <summary>
-        /// Image URL
+        /// Image URL<br/>
         /// Protocol: HTTPS over TLS 1.2 or later<br/>
         /// Image format: JPEG or PNG<br/>
         /// Maximum image size: 1024×1024 pixels<br/>

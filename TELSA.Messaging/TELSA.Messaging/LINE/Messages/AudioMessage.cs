@@ -23,11 +23,11 @@
         public override string Type { get => "audio"; }
 
         /// <summary>
-        /// URL of audio file (Max character limit: 1000)
-        /// HTTPS over TLS 1.2 or later
-        /// m4a
-        /// Max file size: 200 MB
-        ///
+        /// URL of audio file (Max character limit: 1000)<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
+        /// m4a<br/>
+        /// Max file size: 200 MB<br/>
+        /// <br/>
         /// Note: Only M4A files are supported on the Messaging API.If a service only supports MP3 files, you can use a service like FFmpeg to convert the files to M4A.
         /// </summary>
         public string OriginalContentUrl { get; set; }

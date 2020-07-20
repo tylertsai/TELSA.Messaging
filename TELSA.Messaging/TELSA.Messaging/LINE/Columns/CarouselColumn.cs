@@ -23,11 +23,11 @@ namespace TELSA.Messaging.LINE.Columns
         }
 
         /// <summary>
-        /// Image URL (Max character limit: 1,000)
-        /// HTTPS over TLS 1.2 or later
-        /// JPEG or PNG
-        /// Aspect ratio: 1:1.51
-        /// Max width: 1024px
+        /// Image URL (Max character limit: 1,000)<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
+        /// JPEG or PNG<br/>
+        /// Aspect ratio: 1:1.51<br/>
+        /// Max width: 1024px<br/>
         /// Max file size: 1 MB
         /// </summary>
         public string ThumbnailImageUrl { get; set; }
@@ -38,14 +38,14 @@ namespace TELSA.Messaging.LINE.Columns
         public string ImageBackgroundColor { get; set; }
 
         /// <summary>
-        /// Title
+        /// Title<br/>
         /// Max character limit: 40
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Message text
-        /// Max character limit: 120 (no image or title)
+        /// Message text<br/>
+        /// Max character limit: 120 (no image or title)<br/>
         /// Max character limit: 60 (message with an image or title)
         /// </summary>
         public string Text { get; set; }
@@ -56,7 +56,7 @@ namespace TELSA.Messaging.LINE.Columns
         public IAction DefaultAction { get; set; }
 
         /// <summary>
-        /// Action when tapped
+        /// Action when tapped<br/>
         /// Max objects: 3
         /// </summary>
         public IList<IAction> Actions { get; set; }

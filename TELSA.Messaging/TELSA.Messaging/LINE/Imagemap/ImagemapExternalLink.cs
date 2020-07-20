@@ -17,14 +17,14 @@
         }
 
         /// <summary>
-        /// Webpage URL. Called when the label displayed after the video is tapped.
-        /// Max character limit: 1000
+        /// Webpage URL. Called when the label displayed after the video is tapped.<br/>
+        /// Max character limit: 1000<br/>
         /// The available schemes are http, https, line, and tel.For more information about the LINE URL scheme, see <a href="https://developers.line.biz/en/docs/messaging-api/using-line-url-scheme/">Using LINE features with the LINE URL scheme</a>.
         /// </summary>
         public string LinkUri { get; set; }
 
         /// <summary>
-        /// Label. Displayed after the video is finished.
+        /// Label. Displayed after the video is finished.<br/>
         /// Max character limit: 30
         /// </summary>
         public string Label { get; set; }

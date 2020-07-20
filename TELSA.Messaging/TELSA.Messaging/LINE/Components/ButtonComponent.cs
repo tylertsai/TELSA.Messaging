@@ -38,10 +38,10 @@ namespace TELSA.Messaging.LINE.Components
         public string Margin { get; set; }
 
         /// <summary>
-        /// Reference for offsetTop, offsetBottom, offsetStart, and offsetEnd. Specify one of the following values:
-        /// * relative: Use the previous box as reference.
-        /// * absolute: Use the top left of parent element as reference.
-        ///
+        /// Reference for offsetTop, offsetBottom, offsetStart, and offsetEnd. Specify one of the following values:<br/>
+        /// * relative: Use the previous box as reference.<br/>
+        /// * absolute: Use the top left of parent element as reference.<br/>
+        /// <br/>
         /// The default value is relative.For more information, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#component-offset">Offset</a> in the API documentation.
         /// </summary>
         public Position? Position { get; set; }
@@ -72,11 +72,11 @@ namespace TELSA.Messaging.LINE.Components
         public string Height { get; set; }
 
         /// <summary>
-        /// Style of the button. Specify one of the following values:
-        /// * primary: Style for dark color buttons
-        /// * secondary: Style for light color buttons
-        /// * link: HTML link style
-        /// 
+        /// Style of the button. Specify one of the following values:<br/>
+        /// * primary: Style for dark color buttons<br/>
+        /// * secondary: Style for light color buttons<br/>
+        /// * link: HTML link style<br/>
+        /// <br/>
         /// The default value is link.
         /// </summary>
         public ButtonStyle? Style { get; set; }

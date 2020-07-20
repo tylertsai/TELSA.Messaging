@@ -20,8 +20,8 @@
         public string Type { get => "message"; }
 
         /// <summary>
-        /// Label for the action. Spoken when the accessibility feature is enabled on the client device.
-        /// Max character limit: 50
+        /// Label for the action. Spoken when the accessibility feature is enabled on the client device.<br/>
+        /// Max character limit: 50<br/>
         /// Supported on LINE 8.2.0 and later for iOS.
         /// </summary>
         public string Label { get; set; }
@@ -30,8 +30,8 @@
         public ImagemapArea Area { get; set; }
 
         /// <summary>
-        /// Message to send
-        /// Max character limit: 400
+        /// Message to send<br/>
+        /// Max character limit: 400<br/>
         /// Supported on LINE for iOS and Android only.
         /// </summary>
         public string Text { get; set; }

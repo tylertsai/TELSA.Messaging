@@ -31,27 +31,27 @@
         public string Type { get => "datetimepicker"; }
 
         /// <summary>
-        /// Label for the action
-        /// * Required for templates other than image carousel.Max character limit: 20
-        /// * Optional for image carousel templates.Max character limit: 12
-        /// * Optional for rich menus.Spoken when the accessibility feature is enabled on the client device.Max character limit: 20. Supported on LINE 8.2.0 and later for iOS.
-        /// * Required for quick reply buttons.Max character limit: 20. Supported on LINE 8.11.0 and later for iOS and Android.
+        /// Label for the action<br/>
+        /// * Required for templates other than image carousel.Max character limit: 20<br/>
+        /// * Optional for image carousel templates.Max character limit: 12<br/>
+        /// * Optional for rich menus.Spoken when the accessibility feature is enabled on the client device.Max character limit: 20. Supported on LINE 8.2.0 and later for iOS.<br/>
+        /// * Required for quick reply buttons.Max character limit: 20. Supported on LINE 8.11.0 and later for iOS and Android.<br/>
         /// * Required for the button of Flex Message.This property can be specified for the box, image, and text but its value is not displayed. Max character limit: 20
         /// </summary>
         public string Label { get; set; }
 
         /// <summary>
-        /// String returned via webhook in the postback.data property of the <a href="https://developers.line.biz/en/reference/messaging-api/#postback-event">postback event</a>
+        /// String returned via webhook in the postback.data property of the <a href="https://developers.line.biz/en/reference/messaging-api/#postback-event">postback event</a><br/>
         /// Max character limit: 300
         /// </summary>
         public string Data { get; set; }
 
         /// <summary>
         /// todo: 改成列舉
-        /// Action mode
-        /// date: Pick date
-        /// time: Pick time
-        /// datetime: Pick date and time
+        /// Action mode<br/>
+        /// date: Pick date<br/>
+        /// time: Pick time<br/>
+        /// datetime: Pick date and time<br/>
         /// </summary>
         /// <remarks>
         /// The date and time formats for the initial, max, and min values are shown below. The full-date, time-hour, and time-minute formats follow the <a href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a> protocol.

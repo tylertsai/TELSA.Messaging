@@ -55,8 +55,8 @@
         /// * underline: Underline<br/>
         /// * line-through: Strikethrough<br/>
         /// <br/>
-        /// The default value is none.
-        ///
+        /// The default value is none.<br/>
+        /// <br/>
         /// Note: The decoration set in the decoration property of the <see cref="TextComponent"/> cannot be overwritten by the decoration property of the span.
         /// </summary>
         public TextDecoration? Decoration { get; set; }

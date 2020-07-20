@@ -24,19 +24,19 @@
         }
 
         /// <summary>
-        /// URL of the video file (Max character limit: 1000)
-        /// HTTPS over TLS 1.2 or later
-        /// mp4
+        /// URL of the video file (Max character limit: 1000)<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
+        /// mp4<br/>
         /// Max length: No limit Max file size: 200 MB
         /// </summary>
         /// <remarks>A very wide or tall video may be cropped when played in some environments.</remarks>
         public string OriginalContentUrl { get; set; }
 
         /// <summary>
-        /// URL of the preview image (Max character limit: 1000)
-        /// HTTPS over TLS 1.2 or later
-        /// JPG, JPEG, or PNG
-        /// Max image size: No limits
+        /// URL of the preview image (Max character limit: 1000)<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
+        /// JPG, JPEG, or PNG<br/>
+        /// Max image size: No limits<br/>
         /// Max file size: 1 MB
         /// </summary>
         public string PreviewImageUrl { get; set; }

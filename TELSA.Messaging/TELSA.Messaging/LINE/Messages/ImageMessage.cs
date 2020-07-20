@@ -23,19 +23,19 @@
         public override string Type { get => "image"; }
 
         /// <summary>
-        /// Image URL (Max character limit: 1000)
-        /// HTTPS over TLS 1.2 or later
-        /// JPG, JPEG, or PNG
-        /// Max image size: No limits
+        /// Image URL (Max character limit: 1000)<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
+        /// JPG, JPEG, or PNG<br/>
+        /// Max image size: No limits<br/>
         /// Max file size: 10 MB
         /// </summary>
         public string OriginalContentUrl { get; set; }
 
         /// <summary>
-        /// Preview image URL (Max character limit: 1000)
-        /// HTTPS over TLS 1.2 or later
-        /// JPG, JPEG or PNG
-        /// Max image size: No limits
+        /// Preview image URL (Max character limit: 1000)<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
+        /// JPG, JPEG or PNG<br/>
+        /// Max image size: No limits<br/>
         /// Max file size: 1 MB
         /// </summary>
         public string PreviewImageUrl { get; set; }

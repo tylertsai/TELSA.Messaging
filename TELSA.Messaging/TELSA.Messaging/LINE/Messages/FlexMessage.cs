@@ -25,7 +25,7 @@ namespace TELSA.Messaging.LINE.Messages
         public override string Type { get => "flex"; }
 
         /// <summary>
-        /// Alternative text
+        /// Alternative text<br/>
         /// Max character limit: 400
         /// </summary>
         public string AltText { get; set; }

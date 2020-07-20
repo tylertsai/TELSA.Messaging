@@ -1,13 +1,13 @@
 ﻿namespace TELSA.Messaging.LINE.Actions
 {
     /// <summary>
-    /// These are types of actions for your bot to take when a user taps a button or an image in a message.
-    /// * <see cref="PostbackAction"/>
-    /// * <see cref="MessageAction"/>
-    /// * <see cref="UriAction"/>
-    /// * <see cref="DatetimePickerAction"/>
-    /// * <see cref="CameraAction"/>
-    /// * <see cref="CameraRollAction"/>
+    /// These are types of actions for your bot to take when a user taps a button or an image in a message.<br/>
+    /// * <see cref="PostbackAction"/><br/>
+    /// * <see cref="MessageAction"/><br/>
+    /// * <see cref="UriAction"/><br/>
+    /// * <see cref="DatetimePickerAction"/><br/>
+    /// * <see cref="CameraAction"/><br/>
+    /// * <see cref="CameraRollAction"/><br/>
     /// * <see cref="LocationAction"/>
     /// </summary>
     /// <remarks>

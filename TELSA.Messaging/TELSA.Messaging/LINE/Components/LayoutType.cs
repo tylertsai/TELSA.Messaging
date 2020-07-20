@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 namespace TELSA.Messaging.LINE.Components
 {
     /// <summary>
-    /// You can decide the direction of placing child elements by deciding the direction of the main axis of the box. There are three layout types for placing child elements in a box.
+    /// You can decide the direction of placing child elements by deciding the direction of the main axis of the box. There are three layout types for placing child elements in a box.<br/>
     /// The direction of placing child elements is specified by the layout property of the <a href="https://developers.line.biz/en/reference/messaging-api/#box">box</a>.
     /// </summary>
     /// <remarks>
@@ -14,19 +14,19 @@ namespace TELSA.Messaging.LINE.Components
     public enum LayoutType
     {
         /// <summary>
-        /// The child elements are placed horizontally. The direction of placing the child elements is specified by the direction property of the <a href="https://developers.line.biz/en/reference/messaging-api/#bubble">bubble</a>.
+        /// The child elements are placed horizontally. The direction of placing the child elements is specified by the direction property of the <a href="https://developers.line.biz/en/reference/messaging-api/#bubble">bubble</a>.<br/>
         /// A box with this layout type is called a horizontal box.
         /// </summary>
         Horizontal,
 
         /// <summary>
-        /// The child elements are placed vertically from top to bottom.
+        /// The child elements are placed vertically from top to bottom.<br/>
         /// A box with this layout type is called a vertical box.
         /// </summary>
         Vertical,
 
         /// <summary>
-        /// The child elements are placed in the same way as in a horizontal box. For details on differences from a horizontal box, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#baseline-box">Characteristics of the baseline</a> box.
+        /// The child elements are placed in the same way as in a horizontal box. For details on differences from a horizontal box, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#baseline-box">Characteristics of the baseline</a> box.<br/>
         /// A box with this layout type is called a baseline box.
         /// </summary>
         Baseline

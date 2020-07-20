@@ -7,8 +7,8 @@ namespace TELSA.Messaging.LINE.Templates
     /// Template with an image, title, text, and multiple action buttons.
     /// </summary>
     /// <remarks>
-    /// Because of the height limitation for buttons template messages, the lower part of the text display area will get cut off if the height limitation is exceeded. For this reason, depending on the character width, the message text may not be fully displayed even when it is within the character limits.
-    ///
+    /// Because of the height limitation for buttons template messages, the lower part of the text display area will get cut off if the height limitation is exceeded. For this reason, depending on the character width, the message text may not be fully displayed even when it is within the character limits.<br/>
+    /// <br/>
     /// See <a href="https://developers.line.biz/en/reference/messaging-api/#buttons">Here</a>.
     /// </remarks>
     public class ButtonsTemplate : ITemplate
@@ -28,23 +28,23 @@ namespace TELSA.Messaging.LINE.Templates
         public string Type { get => "buttons"; }
 
         /// <summary>
-        /// Image URL (Max character limit: 1,000)
-        /// HTTPS over TLS 1.2 or later
-        /// JPEG or PNG
-        /// Max width: 1024px
+        /// Image URL (Max character limit: 1,000)<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
+        /// JPEG or PNG<br/>
+        /// Max width: 1024px<br/>
         /// Max file size: 1 MB
         /// </summary>
         public string ThumbnailImageUrl { get; set; }
 
         /// <summary>
-        /// Aspect ratio of the image.
-        /// 
+        /// Aspect ratio of the image.<br/>
+        /// <br/>
         /// Default: rectangle
         /// </summary>
         public ImageAspectRatio? ImageAspectRatio { get; set; }
 
         /// <summary>
-        /// Size of the image.
+        /// Size of the image.<br/>
         /// Default: <see cref="ImageSize.Cover"/>
         /// </summary>
         public ImageSize? ImageSize { get; set; }
@@ -55,14 +55,14 @@ namespace TELSA.Messaging.LINE.Templates
         public string ImageBackgroundColor { get; set; }
 
         /// <summary>
-        /// Title
+        /// Title<br/>
         /// Max character limit: 40
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Message text
-        /// Max character limit: 160 (no image or title)
+        /// Message text<br/>
+        /// Max character limit: 160 (no image or title)<br/>
         /// Max character limit: 60 (message with an image or title)
         /// </summary>
         public string Text { get; set; }
@@ -73,7 +73,7 @@ namespace TELSA.Messaging.LINE.Templates
         public IAction DefaultAction { get; set; }
 
         /// <summary>
-        /// Action when tapped
+        /// Action when tapped<br/>
         /// Max objects: 4
         /// </summary>
         public IList<IAction> Actions { get; set; }

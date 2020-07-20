@@ -5,8 +5,8 @@ using TELSA.Messaging.LINE.Imagemap.Actions;
 namespace TELSA.Messaging.LINE.Messages
 {
     /// <summary>
-    /// Imagemap messages are messages configured with an image that has multiple tappable areas. You can assign one tappable area for the entire image or different tappable areas on divided areas of the image.
-    ///
+    /// Imagemap messages are messages configured with an image that has multiple tappable areas. You can assign one tappable area for the entire image or different tappable areas on divided areas of the image.<br/>
+    /// <br/>
     /// You can also play a video on the image and display a label with a hyperlink after the video is finished.
     /// </summary>
     public class ImagemapMessage : MessageBase
@@ -30,15 +30,15 @@ namespace TELSA.Messaging.LINE.Messages
         public override string Type { get => "imagemap"; }
 
         /// <summary>
-        /// Base URL of the image
-        /// Max character limit: 1000
-        /// HTTPS over TLS 1.2 or later
+        /// Base URL of the image<br/>
+        /// Max character limit: 1000<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
         /// For more information about supported images in imagemap messages, see <a href="https://developers.line.biz/en/reference/messaging-api/#base-url">How to configure an image</a>.
         /// </summary>
         public string BaseUrl { get; set; }
 
         /// <summary>
-        /// Alternative text
+        /// Alternative text<br/>
         /// Max character limit: 400
         /// </summary>
         public string AltText { get; set; }
@@ -54,7 +54,7 @@ namespace TELSA.Messaging.LINE.Messages
         public ImagemapVideo Video { get; set; }
 
         /// <summary>
-        /// Action when tapped
+        /// Action when tapped<br/>
         /// Max: 50
         /// </summary>
         public IList<IImagemapAction> Actions { get; }

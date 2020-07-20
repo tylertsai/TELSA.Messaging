@@ -6,13 +6,13 @@ namespace TELSA.Messaging.LINE.Components
     /// This component renders an image.
     /// </summary>
     /// <remarks>
-    /// About the drawing area
-    /// Specify the max width of the image with the size property and the aspect ratio(horizontal-to-vertical ratio) of the image with the aspectRatio property.The rectangular area determined by the size and aspectRatio properties is called the drawing area.The image is rendered in this drawing area.
-    /// * If the image width specified by the flex property is larger than that calculated from the <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#component-width-and-height">size property</a>, the width of the drawing area is scaled down to the width of the component.
-    /// * If the aspect ratio of the image and that specified by the aspectRatio property do not match, the image is displayed according to the aspectMode property. The default value is fit.
-    /// ** If the value of aspectMode is cover: The image fills the entire drawing area.Parts of the image that do not fit in the drawing area are not displayed.
-    /// ** If the value of aspectMode is fit: The entire image is displayed in the drawing area.A background is displayed in the unused areas to the left and right of vertical images and in the areas above and below horizontal images.
-    ///
+    /// About the drawing area<br/>
+    /// Specify the max width of the image with the size property and the aspect ratio(horizontal-to-vertical ratio) of the image with the aspectRatio property.The rectangular area determined by the size and aspectRatio properties is called the drawing area.The image is rendered in this drawing area.<br/>
+    /// * If the image width specified by the flex property is larger than that calculated from the <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#component-width-and-height">size property</a>, the width of the drawing area is scaled down to the width of the component.<br/>
+    /// * If the aspect ratio of the image and that specified by the aspectRatio property do not match, the image is displayed according to the aspectMode property. The default value is fit.<br/>
+    /// ** If the value of aspectMode is cover: The image fills the entire drawing area.Parts of the image that do not fit in the drawing area are not displayed.<br/>
+    /// ** If the value of aspectMode is fit: The entire image is displayed in the drawing area.A background is displayed in the unused areas to the left and right of vertical images and in the areas above and below horizontal images.<br/>
+    /// <br/>
     /// See <a href="https://developers.line.biz/en/reference/messaging-api/#f-image">Here</a>.
     /// </remarks>
     public class ImageComponent : IComponent
@@ -30,10 +30,10 @@ namespace TELSA.Messaging.LINE.Components
         public string Type { get => "image"; }
 
         /// <summary>
-        /// Image URL
-        /// Protocol: HTTPS over TLS 1.2 or later
-        /// Image format: JPEG or PNG
-        /// Maximum image size: 1024×1024 pixels
+        /// Image URL<br/>
+        /// Protocol: HTTPS over TLS 1.2 or later<br/>
+        /// Image format: JPEG or PNG<br/>
+        /// Maximum image size: 1024×1024 pixels<br/>
         /// Maximum data size: 1 MB
         /// </summary>
         public string Url { get; set; }
@@ -49,10 +49,10 @@ namespace TELSA.Messaging.LINE.Components
         public string Margin { get; set; }
 
         /// <summary>
-        /// Reference for offsetTop, offsetBottom, offsetStart, and offsetEnd. Specify one of the following values:
-        /// * relative: Use the previous box as reference.
-        /// * absolute: Use the top left of parent element as reference.
-        ///
+        /// Reference for offsetTop, offsetBottom, offsetStart, and offsetEnd. Specify one of the following values:<br/>
+        /// * relative: Use the previous box as reference.<br/>
+        /// * absolute: Use the top left of parent element as reference.<br/>
+        /// <br/>
         /// The default value is relative.For more information, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#component-offset">Offset</a> in the API documentation.
         /// </summary>
         public Position? Position { get; set; }

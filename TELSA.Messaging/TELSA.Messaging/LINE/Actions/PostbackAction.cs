@@ -25,23 +25,23 @@
         public string Type { get => "postback"; }
 
         /// <summary>
-        /// Label for the action
-        /// * Required for templates other than image carousel.Max character limit: 20
-        /// * Optional for image carousel templates.Max character limit: 12
-        /// * Optional for rich menus.Spoken when the accessibility feature is enabled on the client device.Max character limit: 20. Supported on LINE 8.2.0 and later for iOS.
-        /// * Required for quick reply buttons.Max character limit: 20. Supported on LINE 8.11.0 and later for iOS and Android.
+        /// Label for the action<br/>
+        /// * Required for templates other than image carousel.Max character limit: 20<br/>
+        /// * Optional for image carousel templates.Max character limit: 12<br/>
+        /// * Optional for rich menus.Spoken when the accessibility feature is enabled on the client device.Max character limit: 20. Supported on LINE 8.2.0 and later for iOS.<br/>
+        /// * Required for quick reply buttons.Max character limit: 20. Supported on LINE 8.11.0 and later for iOS and Android.<br/>
         /// * Required for the button of Flex Message.This property can be specified for the box, image, and text but its value is not displayed. Max character limit: 20
         /// </summary>
         public string Label { get; set; }
 
         /// <summary>
-        /// String returned via webhook in the postback.data property of the postback event
+        /// String returned via webhook in the postback.data property of the postback event<br/>
         /// Max character limit: 300
         /// </summary>
         public string Data { get; set; }
 
         /// <summary>
-        /// Text displayed in the chat as a message sent by the user when the action is performed. Required for quick reply buttons. Optional for the other message types.
+        /// Text displayed in the chat as a message sent by the user when the action is performed. Required for quick reply buttons. Optional for the other message types.<br/>
         /// Max character limit: 300
         /// </summary>
         public string DisplayText { get; set; }

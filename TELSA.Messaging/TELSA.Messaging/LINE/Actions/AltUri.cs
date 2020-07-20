@@ -1,9 +1,9 @@
 ﻿namespace TELSA.Messaging.LINE.Actions
 {
     /// <summary>
-    /// URI opened on LINE for macOS and Windows when the action is performed (Max character limit: 1000)
-    /// If the altUri.desktop property is set, the uri property is ignored on LINE for macOS and Windows.
-    /// The available schemes are http, https, line, and tel.For more information about the LINE URL scheme, see <a href="https://developers.line.biz/en/docs/messaging-api/using-line-url-scheme/">Using LINE features with the LINE URL scheme</a>.This property is supported on the following version of LINE.
+    /// URI opened on LINE for macOS and Windows when the action is performed (Max character limit: 1000)<br/>
+    /// If the altUri.desktop property is set, the uri property is ignored on LINE for macOS and Windows.<br/>
+    /// The available schemes are http, https, line, and tel.For more information about the LINE URL scheme, see <a href="https://developers.line.biz/en/docs/messaging-api/using-line-url-scheme/">Using LINE features with the LINE URL scheme</a>.This property is supported on the following version of LINE.<br/>
     /// * LINE 5.12.0 or later for macOS and Windows
     /// </summary>
     public class AltUri

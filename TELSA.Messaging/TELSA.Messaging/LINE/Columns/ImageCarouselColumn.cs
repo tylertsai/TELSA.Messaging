@@ -22,11 +22,11 @@ namespace TELSA.Messaging.LINE.Columns
         }
 
         /// <summary>
-        /// Image URL (Max character limit: 1,000)
-        /// HTTPS over TLS 1.2 or later
-        /// JPEG or PNG
-        /// Aspect ratio: 1:1
-        /// Max width: 1024px
+        /// Image URL (Max character limit: 1,000)<br/>
+        /// HTTPS over TLS 1.2 or later<br/>
+        /// JPEG or PNG<br/>
+        /// Aspect ratio: 1:1<br/>
+        /// Max width: 1024px<br/>
         /// Max file size: 1 MB
         /// </summary>
         public string ImageUrl { get; set; }

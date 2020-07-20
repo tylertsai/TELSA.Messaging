@@ -1,9 +1,9 @@
 ﻿namespace TELSA.Messaging.LINE.Containers
 {
     /// <summary>
-    /// A container is the top-level structure of a Flex Message. Here are the types of containers available:
-    /// * <see cref="BubbleContainer"/>
-    /// * <see cref="CarouselContainer"/>
+    /// A container is the top-level structure of a Flex Message. Here are the types of containers available:<br/>
+    /// * <see cref="BubbleContainer"/><br/>
+    /// * <see cref="CarouselContainer"/><br/>
     /// For JSON samples and usage of containers, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-elements/">Flex Message elements</a> in the API documentation.
     /// </summary>
     /// <remarks>

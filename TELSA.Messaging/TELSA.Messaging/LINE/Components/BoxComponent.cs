@@ -31,10 +31,10 @@ namespace TELSA.Messaging.LINE.Components
         public LayoutType Layout { get; set; }
 
         /// <summary>
-        /// Components in this box. Here are the types of components available:
-        /// * When the layout property is horizontal or vertical: <see cref="BoxComponent"/>, <see cref="ButtonComponent"/>, <see cref="ImageComponent"/>, <see cref="TextComponent"/>, <see cref="SeparatorComponent"/>, and <see cref="FillerComponent"/>
-        /// * When the layout property is baseline: <see cref="IconComponent"/>, <see cref="TextComponent"/>, and <see cref="FillerComponent"/>
-        ///
+        /// Components in this box. Here are the types of components available:<br/>
+        /// * When the layout property is horizontal or vertical: <see cref="BoxComponent"/>, <see cref="ButtonComponent"/>, <see cref="ImageComponent"/>, <see cref="TextComponent"/>, <see cref="SeparatorComponent"/>, and <see cref="FillerComponent"/><br/>
+        /// * When the layout property is baseline: <see cref="IconComponent"/>, <see cref="TextComponent"/>, and <see cref="FillerComponent"/><br/>
+        /// <br/>
         /// Components are rendered in the order specified in the array.
         /// </summary>
         public IList<IComponent> Contents { get; }
@@ -110,10 +110,10 @@ namespace TELSA.Messaging.LINE.Components
         public string PaddingEnd { get; set; }
 
         /// <summary>
-        /// Reference position for placing this box. Specify one of the following values:
-        /// * relative: Use the previous box as reference.
-        /// * absolute: Use the top left of parent element as reference.
-        ///
+        /// Reference position for placing this box. Specify one of the following values:<br/>
+        /// * relative: Use the previous box as reference.<br/>
+        /// * absolute: Use the top left of parent element as reference.<br/>
+        /// <br/>
         /// The default value is relative.For more information, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#component-offset">Offset</a> in the API documentation.
         /// </summary>
         public Position? Position { get; set; }
@@ -139,8 +139,8 @@ namespace TELSA.Messaging.LINE.Components
         public string OffsetEnd { get; set; }
 
         /// <summary>
-        /// Action performed when this image is tapped. Specify an action object. This property is supported on the following versions of LINE.
-        ///
+        /// Action performed when this image is tapped. Specify an action object. This property is supported on the following versions of LINE.<br/>
+        /// <br/>
         /// * LINE for iOS and Android: 8.11.0 and later
         /// </summary>
         public IAction Action { get; set; }

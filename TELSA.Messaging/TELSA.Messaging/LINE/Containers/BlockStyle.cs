@@ -1,11 +1,11 @@
 ﻿namespace TELSA.Messaging.LINE.Containers
 {
     /// <summary>
-    /// Block style.
+    /// Block style.<br/>
+    /// <br/>
+    /// Note: You cannot place a separator above the first block.
     /// </summary>
     /// <remarks>
-    /// Note: You cannot place a separator above the first block.
-    /// 
     /// See <a href="https://developers.line.biz/en/reference/messaging-api/#block-style">Here</a>.
     /// </remarks>
     public class BlockStyle

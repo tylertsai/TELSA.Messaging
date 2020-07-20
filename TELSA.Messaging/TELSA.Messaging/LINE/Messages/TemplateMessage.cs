@@ -3,13 +3,13 @@
 namespace TELSA.Messaging.LINE.Messages
 {
     /// <summary>
-    /// Template messages are messages with predefined layouts which you can customize. For more information, see Template messages.
-    /// The following template types are available:
-    /// * <see cref="ButtonsTemplate"/>
-    /// * <see cref="ConfirmTemplate"/>
-    /// * <see cref="CarouselTemplate"/>
-    /// * <see cref="ImageCarouselTemplate"/>
-    /// 
+    /// Template messages are messages with predefined layouts which you can customize. For more information, see Template messages.<br/>
+    /// The following template types are available:<br/>
+    /// * <see cref="ButtonsTemplate"/><br/>
+    /// * <see cref="ConfirmTemplate"/><br/>
+    /// * <see cref="CarouselTemplate"/><br/>
+    /// * <see cref="ImageCarouselTemplate"/><br/>
+    /// <br/>
     /// Note: Template messages are only supported on LINE 6.7.0 and later for iOS and Android.
     /// </summary>
     /// <remarks>
@@ -32,7 +32,7 @@ namespace TELSA.Messaging.LINE.Messages
         public override string Type { get => "template"; }
 
         /// <summary>
-        /// Alternative text. Displayed on devices that do not support template messages.
+        /// Alternative text. Displayed on devices that do not support template messages.<br/>
         /// Max character limit: 400
         /// </summary>
         public string AltText { get; set; }
