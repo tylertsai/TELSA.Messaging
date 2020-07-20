@@ -16,11 +16,9 @@ namespace TELSA.Messaging.LINE.Messages
         /// Constructor.
         /// </summary>
         /// <param name="action"><see cref="Action"/></param>
-        /// <param name="imageUrl"><see cref="ImageUrl"/></param>
-        public QuickReplyButton(IAction action, string imageUrl = null)
+        public QuickReplyButton(IAction action)
         {
             Action = action;
-            ImageUrl = imageUrl;
         }
 
         /// <summary>

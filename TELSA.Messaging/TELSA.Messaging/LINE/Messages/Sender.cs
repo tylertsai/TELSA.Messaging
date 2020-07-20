@@ -11,17 +11,6 @@
     public class Sender
     {
         /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="name"><seealso cref="Name"/></param>
-        /// <param name="iconUrl">b<see cref="IconUrl"/></param>
-        public Sender(string name = null, string iconUrl = null)
-        {
-            Name = name;
-            IconUrl = iconUrl;
-        }
-
-        /// <summary>
         /// Display name. Certain words such as LINE may not be used.<br/>
         /// Max character limit: 20
         /// </summary>

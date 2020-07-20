@@ -76,6 +76,6 @@ namespace TELSA.Messaging.LINE.Templates
         /// Action when tapped<br/>
         /// Max objects: 4
         /// </summary>
-        public IList<IAction> Actions { get; set; }
+        public IList<IAction> Actions { get; }
     }
 }

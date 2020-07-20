@@ -72,7 +72,7 @@ namespace TELSA.Messaging.LINE.Components
         /// <summary>
         /// The ratio of the width or height of this component within the parent box. For more information, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#component-width-and-height">Width and height of components</a>.
         /// </summary>
-        public int Flex { get; set; }
+        public int? Flex { get; set; }
 
         /// <summary>
         /// Minimum space between components in this box. The default value is none. For more information, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#spacing-property">spacing property of the box</a> in the API documentation.

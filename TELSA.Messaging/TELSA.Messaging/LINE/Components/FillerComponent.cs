@@ -16,6 +16,6 @@
         /// <summary>
         /// The ratio of the width or height of this component within the parent box. For more information, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#component-width-and-height">Width and height of components</a>.
         /// </summary>
-        public int Flex { get; set; }
+        public int? Flex { get; set; }
     }
 }

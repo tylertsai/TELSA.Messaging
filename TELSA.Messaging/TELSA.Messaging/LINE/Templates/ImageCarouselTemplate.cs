@@ -27,6 +27,6 @@ namespace TELSA.Messaging.LINE.Templates
         /// Array of columns<br/>
         /// Max columns: 10
         /// </summary>
-        public IList<ImageCarouselColumn> Columns { get; set; }
+        public IList<ImageCarouselColumn> Columns { get; }
     }
 }

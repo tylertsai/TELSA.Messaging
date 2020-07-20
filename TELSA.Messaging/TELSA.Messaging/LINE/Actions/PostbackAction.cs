@@ -13,12 +13,10 @@
         /// </summary>
         /// <param name="data"><see cref="Data"/></param>
         /// <param name="label"><see cref="Label"/></param>
-        /// <param name="displayText"><see cref="DisplayText"/></param>
-        public PostbackAction(string data, string label = null, string displayText = null)
+        public PostbackAction(string data, string label = null)
         {
             Data = data;
             Label = label;
-            DisplayText = displayText;
         }
 
         /// <inheritdoc/>

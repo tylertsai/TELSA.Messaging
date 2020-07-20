@@ -37,6 +37,6 @@ namespace TELSA.Messaging.LINE.Templates
         /// Action when tapped<br/>
         /// Set 2 actions for the 2 buttons
         /// </summary>
-        public IList<IAction> Actions { get; set; }
+        public IList<IAction> Actions { get; }
     }
 }

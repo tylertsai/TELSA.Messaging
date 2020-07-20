@@ -17,13 +17,11 @@ namespace TELSA.Messaging.LINE.Messages
         /// <param name="baseUrl"><see cref="BaseUrl"/></param>
         /// <param name="altText"><see cref="AltText"/></param>
         /// <param name="baseSize"><see cref="BaseSize"/></param>
-        /// <param name="video"><see cref="Video"/></param>
-        public ImagemapMessage(string baseUrl, string altText, ImagemapBaseSize baseSize, ImagemapVideo video = null)
+        public ImagemapMessage(string baseUrl, string altText, ImagemapBaseSize baseSize)
         {
             BaseUrl = baseUrl;
             AltText = altText;
             BaseSize = baseSize;
-            Video = video;
         }
 
         /// <inheritdoc/>

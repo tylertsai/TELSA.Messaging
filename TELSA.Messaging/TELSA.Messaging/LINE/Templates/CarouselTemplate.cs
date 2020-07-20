@@ -39,7 +39,7 @@ namespace TELSA.Messaging.LINE.Templates
         /// Array of columns<br/>
         /// Max columns: 10
         /// </summary>
-        public IList<CarouselColumn> Columns { get; set; }
+        public IList<CarouselColumn> Columns { get; }
 
         /// <summary>
         /// Aspect ratio of the image.<br/>

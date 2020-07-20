@@ -13,12 +13,10 @@
         /// </summary>
         /// <param name="uri"><see cref="Uri"/></param>
         /// <param name="label"><see cref="Label"/></param>
-        /// <param name="altUri"><see cref="AltUri"/></param>
-        public UriAction(string uri, string label = null, AltUri altUri = null)
+        public UriAction(string uri, string label = null)
         {
             Uri = uri;
             Label = label;
-            AltUri = altUri;
         }
 
         /// <inheritdoc/>

@@ -59,6 +59,6 @@ namespace TELSA.Messaging.LINE.Columns
         /// Action when tapped<br/>
         /// Max objects: 3
         /// </summary>
-        public IList<IAction> Actions { get; set; }
+        public IList<IAction> Actions { get; }
     }
 }
