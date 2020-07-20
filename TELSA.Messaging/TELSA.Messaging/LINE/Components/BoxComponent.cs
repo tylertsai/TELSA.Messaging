@@ -32,8 +32,8 @@ namespace TELSA.Messaging.LINE.Components
 
         /// <summary>
         /// Components in this box. Here are the types of components available:
-        /// * When the layout property is horizontal or vertical: <see cref="BoxComponent"/>, <see cref="ButtonComponent"/>, <see cref="ImageComponent"/>, <see cref="TextComponent"/>, <see cref="SeparatorComponent"/>, <see cref="FillerComponent"/>, and <see cref="SpacerComponent"/>(not recommended)
-        /// * When the layout property is baseline: <see cref="IconComponent"/>, <see cref="TextComponent"/>, <see cref="FillerComponent"/>, and <see cref="SpacerComponent"/>(not recommended)
+        /// * When the layout property is horizontal or vertical: <see cref="BoxComponent"/>, <see cref="ButtonComponent"/>, <see cref="ImageComponent"/>, <see cref="TextComponent"/>, <see cref="SeparatorComponent"/>, and <see cref="FillerComponent"/>
+        /// * When the layout property is baseline: <see cref="IconComponent"/>, <see cref="TextComponent"/>, and <see cref="FillerComponent"/>
         ///
         /// Components are rendered in the order specified in the array.
         /// </summary>

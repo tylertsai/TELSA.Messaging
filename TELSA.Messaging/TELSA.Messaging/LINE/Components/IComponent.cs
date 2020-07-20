@@ -10,7 +10,6 @@
     /// * <see cref="SpanComponent"/>
     /// * <see cref="SeparatorComponent"/>
     /// * <see cref="FillerComponent"/>
-    /// * <see cref="SpacerComponent"/>(not recommended)
     ///
     /// For JSON samples and usage of each component, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-elements/">Flex Message elements</a> and <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/">Flex Message layout</a> in the API documentation.
     /// </summary>
