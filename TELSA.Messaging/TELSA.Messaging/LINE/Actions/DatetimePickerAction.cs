@@ -14,17 +14,11 @@
         /// <param name="data"><see cref="Data"/></param>
         /// <param name="mode"><see cref="Mode"/></param>
         /// <param name="label"><see cref="Label"/></param>
-        /// <param name="initial"><see cref="Initial"/></param>
-        /// <param name="max"><see cref="Max"/></param>
-        /// <param name="min"><see cref="Min"/></param>
-        public DatetimePickerAction(string data, ActionMode mode, string label, string initial, string max, string min)
+        public DatetimePickerAction(string data, ActionMode mode, string label = null)
         {
             Data = data;
             Mode = mode;
             Label = label;
-            Initial = initial;
-            Max = max;
-            Min = min;
         }
 
         /// <inheritdoc/>
