@@ -76,7 +76,8 @@ namespace TELSA.Messaging.LINE
         /// <remarks>
         /// To send reply messages, you must have a reply token which is included in a webhook event object.<br/><br/>
         /// <a href="https://developers.line.biz/en/reference/messaging-api/#webhooks">Webhooks</a> are used to notify you when an event occurs.For events that you can respond to, a reply token is issued for replying to messages.<br/><br/>
-        /// Because the reply token becomes invalid after a certain period of time, responses should be sent as soon as a message is received.Reply tokens can only be used once.
+        /// Because the reply token becomes invalid after a certain period of time, responses should be sent as soon as a message is received.Reply tokens can only be used once.<br/><br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#send-reply-message">Here</a>.
         /// </remarks>
         public async Task SendReplyMessageAsync(string replyMessage)
         {
@@ -91,7 +92,8 @@ namespace TELSA.Messaging.LINE
         /// <remarks>
         /// To send reply messages, you must have a reply token which is included in a webhook event object.<br/><br/>
         /// <a href="https://developers.line.biz/en/reference/messaging-api/#webhooks">Webhooks</a> are used to notify you when an event occurs.For events that you can respond to, a reply token is issued for replying to messages.<br/><br/>
-        /// Because the reply token becomes invalid after a certain period of time, responses should be sent as soon as a message is received.Reply tokens can only be used once.
+        /// Because the reply token becomes invalid after a certain period of time, responses should be sent as soon as a message is received.Reply tokens can only be used once.<br/><br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#send-reply-message">Here</a>.
         /// </remarks>
         public async Task SendReplyMessageAsync(ReplyMessage replyMessage)
         {
@@ -122,6 +124,28 @@ namespace TELSA.Messaging.LINE
             var json = JsonConvert.SerializeObject(pushMessage, _settings);
 
             await SendPushMessageAsync(json);
+        }
+
+        /// <summary>
+        /// Sends push messages to multiple users at any time. Messages cannot be sent to groups or rooms.
+        /// </summary>
+        /// <param name="multicastMessage">Multicast Message.</param>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-multicast-message">Here</a>.</remarks>
+        public async Task SendMulticastMessageAsync(string multicastMessage)
+        {
+            await PostAsync("message/multicast", multicastMessage);
+        }
+
+        /// <summary>
+        /// Sends push messages to multiple users at any time. Messages cannot be sent to groups or rooms.
+        /// </summary>
+        /// <param name="multicastMessage">Multicast Message.</param>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-multicast-message">Here</a>.</remarks>
+        public async Task SendMulticastMessageAsync(MulticastMessage multicastMessage)
+        {
+            var json = JsonConvert.SerializeObject(multicastMessage, _settings);
+
+            await SendMulticastMessageAsync(json);
         }
     }
 }
