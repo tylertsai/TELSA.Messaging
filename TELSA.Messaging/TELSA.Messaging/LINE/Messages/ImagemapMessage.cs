@@ -17,11 +17,13 @@ namespace TELSA.Messaging.LINE.Messages
         /// <param name="baseUrl"><see cref="BaseUrl"/></param>
         /// <param name="altText"><see cref="AltText"/></param>
         /// <param name="baseSize"><see cref="BaseSize"/></param>
-        public ImagemapMessage(string baseUrl, string altText, ImagemapBaseSize baseSize)
+        /// <param name="actions"><see cref="Actions"/></param>
+        public ImagemapMessage(string baseUrl, string altText, ImagemapBaseSize baseSize, IList<IImagemapAction> actions)
         {
             BaseUrl = baseUrl;
             AltText = altText;
             BaseSize = baseSize;
+            Actions = actions;
         }
 
         /// <inheritdoc/>
@@ -44,7 +46,7 @@ namespace TELSA.Messaging.LINE.Messages
         /// <summary>
         /// Base size of the image.
         /// </summary>
-        public ImagemapBaseSize BaseSize { get; set; }
+        public ImagemapBaseSize BaseSize { get; }
 
         /// <summary>
         /// This property is required if you set a video to play on the imagemap.

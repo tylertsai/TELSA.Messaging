@@ -14,11 +14,9 @@ namespace TELSA.Messaging.LINE.Messages
         /// Constructors.
         /// </summary>
         /// <param name="text"><see cref="Text"/></param>
-        /// <param name="emojis"><see cref="Emojis"/></param>
-        public TextMessage(string text, IList<Emoji> emojis)
+        public TextMessage(string text)
         {
             Text = text;
-            Emojis = emojis;
         }
 
         /// <inheritdoc/>
@@ -37,6 +35,6 @@ namespace TELSA.Messaging.LINE.Messages
         /// One or more LINE emoji.<br/>
         /// Max: 20 LINE emoji
         /// </summary>
-        public IList<Emoji> Emojis { get; }
+        public IList<Emoji> Emojis { get; set; }
     }
 }
