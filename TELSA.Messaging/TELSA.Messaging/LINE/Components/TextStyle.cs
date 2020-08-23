@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace TELSA.Messaging.LINE.Components
@@ -12,11 +13,13 @@ namespace TELSA.Messaging.LINE.Components
         /// <summary>
         /// Normal
         /// </summary>
+        [EnumMember(Value = "normal")]
         Normal,
 
         /// <summary>
         /// Italic
         /// </summary>
+        [EnumMember(Value = "italic")]
         Italic
     }
 }

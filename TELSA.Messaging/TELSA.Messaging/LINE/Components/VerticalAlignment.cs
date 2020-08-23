@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace TELSA.Messaging.LINE.Components
@@ -14,16 +15,19 @@ namespace TELSA.Messaging.LINE.Components
         /// <summary>
         /// Top-aligned (default value)
         /// </summary>
+        [EnumMember(Value = "top")]
         Top,
 
         /// <summary>
         /// Bottom-aligned
         /// </summary>
+        [EnumMember(Value = "bottom")]
         Bottom,
 
         /// <summary>
         /// Center-aligned
         /// </summary>
+        [EnumMember(Value = "center")]
         Center
     }
 }

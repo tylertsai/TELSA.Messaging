@@ -13,11 +13,13 @@ namespace TELSA.Messaging.LINE.Components
         /// <summary>
         /// No decoration
         /// </summary>
+        [EnumMember(Value = "none")]
         None,
 
         /// <summary>
         /// Underline
         /// </summary>
+        [EnumMember(Value = "underline")]
         Underline,
 
         /// <summary>

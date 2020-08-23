@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace TELSA.Messaging.LINE.Components
@@ -17,18 +18,21 @@ namespace TELSA.Messaging.LINE.Components
         /// The child elements are placed horizontally. The direction of placing the child elements is specified by the direction property of the <a href="https://developers.line.biz/en/reference/messaging-api/#bubble">bubble</a>.<br/>
         /// A box with this layout type is called a horizontal box.
         /// </summary>
+        [EnumMember(Value = "horizontal")]
         Horizontal,
 
         /// <summary>
         /// The child elements are placed vertically from top to bottom.<br/>
         /// A box with this layout type is called a vertical box.
         /// </summary>
+        [EnumMember(Value = "vertical")]
         Vertical,
 
         /// <summary>
         /// The child elements are placed in the same way as in a horizontal box. For details on differences from a horizontal box, see <a href="https://developers.line.biz/en/docs/messaging-api/flex-message-layout/#baseline-box">Characteristics of the baseline</a> box.<br/>
         /// A box with this layout type is called a baseline box.
         /// </summary>
+        [EnumMember(Value = "baseline")]
         Baseline
     }
 }
