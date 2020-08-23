@@ -30,8 +30,8 @@ namespace TELSA.Messaging.LINE.Messages
         public IList<IMessage> Messages { get; }
 
         /// <summary>
-        /// true: The user doesn't receive a push notification when the message is sent.<br/>
-        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).<br/>
+        /// * true: The user doesn't receive a push notification when the message is sent.<br/>
+        /// * false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).<br/>
         /// Default: false
         /// </summary>
         public bool NotificationDisabled { get; set; }
