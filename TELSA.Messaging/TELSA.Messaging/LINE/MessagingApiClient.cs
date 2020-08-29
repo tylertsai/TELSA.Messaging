@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -48,8 +49,8 @@ namespace TELSA.Messaging.LINE
         /// </summary>
         /// <param name="api">API.</param>
         /// <param name="json">JSON.</param>
-        /// <returns>Task.</returns>
-        private async Task PostAsync(string api, string json)
+        /// <returns>Messaging API response.</returns>
+        private async Task<MessagingApiResponse> PostAsync(string api, string json)
         {
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var request = new HttpRequestMessage(HttpMethod.Post, api)
@@ -65,130 +66,134 @@ namespace TELSA.Messaging.LINE
 
                 throw new LineMessagingException(response.StatusCode, error.Message, error);
             }
+
+            return new MessagingApiResponse(response);
         }
 
         /// <summary>
         /// Sends a reply message in response to an event from a user, group, or room.
         /// </summary>
         /// <param name="replyMessage">Reply message.</param>
-        /// <returns>Task.</returns>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>
         /// To send reply messages, you must have a reply token which is included in a webhook event object.<br/><br/>
         /// <a href="https://developers.line.biz/en/reference/messaging-api/#webhooks">Webhooks</a> are used to notify you when an event occurs.For events that you can respond to, a reply token is issued for replying to messages.<br/><br/>
         /// Because the reply token becomes invalid after a certain period of time, responses should be sent as soon as a message is received.Reply tokens can only be used once.<br/><br/>
         /// See <a href="https://developers.line.biz/en/reference/messaging-api/#send-reply-message">Here</a>.
         /// </remarks>
-        public async Task SendReplyMessageAsync(string replyMessage)
+        public async Task<MessagingApiResponse> SendReplyMessageAsync(string replyMessage)
         {
-            await PostAsync("message/reply", replyMessage);
+            return await PostAsync("message/reply", replyMessage);
         }
 
         /// <summary>
         /// Sends a reply message in response to an event from a user, group, or room.
         /// </summary>
         /// <param name="replyMessage">Reply message.</param>
-        /// <returns>Task.</returns>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>
         /// To send reply messages, you must have a reply token which is included in a webhook event object.<br/><br/>
         /// <a href="https://developers.line.biz/en/reference/messaging-api/#webhooks">Webhooks</a> are used to notify you when an event occurs.For events that you can respond to, a reply token is issued for replying to messages.<br/><br/>
         /// Because the reply token becomes invalid after a certain period of time, responses should be sent as soon as a message is received.Reply tokens can only be used once.<br/><br/>
         /// See <a href="https://developers.line.biz/en/reference/messaging-api/#send-reply-message">Here</a>.
         /// </remarks>
-        public async Task SendReplyMessageAsync(ReplyMessage replyMessage)
+        public async Task<MessagingApiResponse> SendReplyMessageAsync(ReplyMessage replyMessage)
         {
             var json = JsonConvert.SerializeObject(replyMessage, _settings);
 
-            await SendReplyMessageAsync(json);
+            return await SendReplyMessageAsync(json);
         }
 
         /// <summary>
         /// Sends a push message to a user, group, or room at any time.
         /// </summary>
         /// <param name="pushMessage">Push message.</param>
-        /// <returns>Task.</returns>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-push-message">Here</a>.</remarks>
-        public async Task SendPushMessageAsync(string pushMessage)
+        public async Task<MessagingApiResponse> SendPushMessageAsync(string pushMessage)
         {
-            await PostAsync("message/push", pushMessage);
+            return await PostAsync("message/push", pushMessage);
         }
 
         /// <summary>
         /// Sends a push message to a user, group, or room at any time.
         /// </summary>
         /// <param name="pushMessage">Push message.</param>
-        /// <returns>Task.</returns>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-push-message">Here</a>.</remarks>
-        public async Task SendPushMessageAsync(PushMessage pushMessage)
+        public async Task<MessagingApiResponse> SendPushMessageAsync(PushMessage pushMessage)
         {
             var json = JsonConvert.SerializeObject(pushMessage, _settings);
 
-            await SendPushMessageAsync(json);
+            return await SendPushMessageAsync(json);
         }
 
         /// <summary>
         /// Sends push messages to multiple users at any time. Messages cannot be sent to groups or rooms.
         /// </summary>
         /// <param name="multicastMessage">Multicast Message.</param>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-multicast-message">Here</a>.</remarks>
-        public async Task SendMulticastMessageAsync(string multicastMessage)
+        public async Task<MessagingApiResponse> SendMulticastMessageAsync(string multicastMessage)
         {
-            await PostAsync("message/multicast", multicastMessage);
+            return await PostAsync("message/multicast", multicastMessage);
         }
 
         /// <summary>
         /// Sends push messages to multiple users at any time. Messages cannot be sent to groups or rooms.
         /// </summary>
         /// <param name="multicastMessage">Multicast Message.</param>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-multicast-message">Here</a>.</remarks>
-        public async Task SendMulticastMessageAsync(MulticastMessage multicastMessage)
+        public async Task<MessagingApiResponse> SendMulticastMessageAsync(MulticastMessage multicastMessage)
         {
             var json = JsonConvert.SerializeObject(multicastMessage, _settings);
 
-            await SendMulticastMessageAsync(json);
+            return await SendMulticastMessageAsync(json);
         }
 
         /// <summary>
         /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
         /// </summary>
-        /// <returns>Task.</returns>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message">Here</a>.</remarks>
-        public async Task SendNarrowcastMessageAsync(string narrowcastMessage)
+        public async Task<MessagingApiResponse> SendNarrowcastMessageAsync(string narrowcastMessage)
         { 
-            await PostAsync("message/narrowcast", narrowcastMessage);
+            return await PostAsync("message/narrowcast", narrowcastMessage);
         }
         
         /// <summary>
         /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
         /// </summary>
-        /// <returns>Task.</returns>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message">Here</a>.</remarks>
-        public async Task SendNarrowcastMessageAsync(NarrowcastMessage narrowcastMessage)
+        public async Task<MessagingApiResponse> SendNarrowcastMessageAsync(NarrowcastMessage narrowcastMessage)
         { 
             var json = JsonConvert.SerializeObject(narrowcastMessage, _settings);
 
-            await SendNarrowcastMessageAsync(json);
+            return await SendNarrowcastMessageAsync(json);
         }
         
         /// <summary>
         /// Sends push messages to multiple users at any time.
         /// </summary>
-        /// <returns>Task.</returns>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
-        public async Task SendBroadcastMessageAsync(string broadcastMessage)
+        public async Task<MessagingApiResponse> SendBroadcastMessageAsync(string broadcastMessage)
         { 
-            await PostAsync("message/broadcast", broadcastMessage);
+            return await PostAsync("message/broadcast", broadcastMessage);
         }
         
         /// <summary>
         /// Sends push messages to multiple users at any time.
         /// </summary>
-        /// <returns>Task.</returns>
+        /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
-        public async Task SendBroadcastMessage(BroadcastMessage broadcastMessage)
+        public async Task<MessagingApiResponse> SendBroadcastMessage(BroadcastMessage broadcastMessage)
         { 
             var json = JsonConvert.SerializeObject(broadcastMessage, _settings);
 
-            await SendBroadcastMessageAsync(json);
+            return await SendBroadcastMessageAsync(json);
         }
     }
 }
