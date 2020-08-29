@@ -45,6 +45,39 @@ namespace TELSA.Messaging.LINE
         }
 
         /// <summary>
+        /// Send a HTTP request as an asynchronous operation.
+        /// </summary>
+        /// <param name="request">HTTP request.</param>
+        /// <returns>Messaging API response.</returns>
+        /// <exception cref="LineMessagingException"></exception>
+        private async Task<MessagingApiResponse> SendAsync(HttpRequestMessage request)
+        {
+            var response = await _httpClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = JsonConvert.DeserializeObject<LineMessagingError>(await response.Content.ReadAsStringAsync());
+
+                throw new LineMessagingException(response.StatusCode, error.Message, error);
+            }
+
+            return new MessagingApiResponse(response);
+        }
+
+        /// <summary>
+        /// POST message to API.
+        /// </summary>
+        /// <param name="api">API.</param>
+        /// <param name="json">JSON.</param>
+        /// <returns>Messaging API response.</returns>
+        private async Task<MessagingApiResponse> GetAsync(string api)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, api);
+
+            return await SendAsync(request);
+        }
+        
+        /// <summary>
         /// POST message to API.
         /// </summary>
         /// <param name="api">API.</param>
@@ -58,16 +91,7 @@ namespace TELSA.Messaging.LINE
                 Content = content
             };
 
-            var response = await _httpClient.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = JsonConvert.DeserializeObject<LineMessagingError>(await response.Content.ReadAsStringAsync());
-
-                throw new LineMessagingException(response.StatusCode, error.Message, error);
-            }
-
-            return new MessagingApiResponse(response);
+            return await SendAsync(request);
         }
 
         /// <summary>
@@ -155,32 +179,57 @@ namespace TELSA.Messaging.LINE
         /// <summary>
         /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
         /// </summary>
+        /// <param name="narrowcastMessage">Narrowcast message.</param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message">Here</a>.</remarks>
         public async Task<MessagingApiResponse> SendNarrowcastMessageAsync(string narrowcastMessage)
-        { 
+        {
             return await PostAsync("message/narrowcast", narrowcastMessage);
         }
         
         /// <summary>
         /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
         /// </summary>
+        /// <param name="narrowcastMessage">Narrowcast message.</param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message">Here</a>.</remarks>
         public async Task<MessagingApiResponse> SendNarrowcastMessageAsync(NarrowcastMessage narrowcastMessage)
-        { 
+        {
             var json = JsonConvert.SerializeObject(narrowcastMessage, _settings);
 
             return await SendNarrowcastMessageAsync(json);
         }
-        
+
+        /// <summary>
+        /// Gets the status of a narrowcast message.
+        /// </summary>
+        /// <param name="requestId">The narrowcast message's request ID. Each Messaging API request has a request ID. Find it in the <a href="https://developers.line.biz/en/reference/messaging-api/#response-headers">response headers</a>.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Notice: Messages must have a minimum number of recipients<br/><br/>
+        /// Narrowcast messages cannot be sent when the number of recipients is below a certain minimum amount, to prevent someone from guessing the recipients' attributes. The minimum number of recipients is a private value defined by the LINE Platform.<br/><br/>
+        /// <br/><br/>
+        /// Notice: Window of availability for status requests<br/><br/>
+        /// You can get the status of a narrowcast message for up to 7 days after you have requested that it be sent.<br/><br/>
+        /// <br/><br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#get-narrowcast-progress-status">Here</a>.
+        /// </remarks>
+        public async Task<RequestProgress> GetNarrowcastMessageStatusAsync(string requestId)
+        {
+            var response = await GetAsync($"message/progress/narrowcast?requestId={requestId}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            var requestProgress = JsonConvert.DeserializeObject<RequestProgress>(json);
+
+            return requestProgress;
+        }
+
         /// <summary>
         /// Sends push messages to multiple users at any time.
         /// </summary>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
         public async Task<MessagingApiResponse> SendBroadcastMessageAsync(string broadcastMessage)
-        { 
+        {
             return await PostAsync("message/broadcast", broadcastMessage);
         }
         
@@ -190,7 +239,7 @@ namespace TELSA.Messaging.LINE
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
         public async Task<MessagingApiResponse> SendBroadcastMessage(BroadcastMessage broadcastMessage)
-        { 
+        {
             var json = JsonConvert.SerializeObject(broadcastMessage, _settings);
 
             return await SendBroadcastMessageAsync(json);

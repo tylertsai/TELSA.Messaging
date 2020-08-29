@@ -13,9 +13,15 @@ namespace TELSA.Messaging.LINE
         /// <param name="response">HTTP response message.</param>
         public MessagingApiResponse(HttpResponseMessage response)
         {
+            HttpResponseMessage = response;
             Headers = new MessagingApiResponseHeaders(response.Headers);
         }
         
+        /// <summary>
+        /// HTTP response.
+        /// </summary>
+        internal HttpResponseMessage HttpResponseMessage { get; }
+
         /// <summary>
         /// Response headers.
         /// </summary>
