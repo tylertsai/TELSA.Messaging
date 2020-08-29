@@ -60,7 +60,7 @@ namespace TELSA.Messaging.LINE
 
             var response = await _httpClient.SendAsync(request);
 
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (!response.IsSuccessStatusCode)
             {
                 var error = JsonConvert.DeserializeObject<LineMessagingError>(await response.Content.ReadAsStringAsync());
 
