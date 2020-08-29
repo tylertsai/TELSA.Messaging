@@ -11,7 +11,7 @@ namespace TELSA.Messaging.LINE.Messages
         /// Constructor.
         /// </summary>
         /// <param name="messages"><see cref="Messages"/></param>
-        public SendMessage(IList<IMessage> messages)
+        protected SendMessage(IList<IMessage> messages)
         {
             Messages = messages;
         }

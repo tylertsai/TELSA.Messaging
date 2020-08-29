@@ -147,5 +147,27 @@ namespace TELSA.Messaging.LINE
 
             await SendMulticastMessageAsync(json);
         }
+
+        /// <summary>
+        /// Sends push messages to multiple users at any time.
+        /// </summary>
+        /// <returns>Task.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
+        public async Task SendBroadcastMessageAsync(string broadcastMessage)
+        { 
+            await PostAsync("message/broadcast", broadcastMessage);
+        }
+        
+        /// <summary>
+        /// Sends push messages to multiple users at any time.
+        /// </summary>
+        /// <returns>Task.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
+        public async Task SendBroadcastMessage(BroadcastMessage broadcastMessage)
+        { 
+            var json = JsonConvert.SerializeObject(broadcastMessage, _settings);
+
+            await SendBroadcastMessageAsync(json);
+        }
     }
 }
