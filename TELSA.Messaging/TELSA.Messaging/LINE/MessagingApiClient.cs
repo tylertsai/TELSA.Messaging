@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -148,6 +147,28 @@ namespace TELSA.Messaging.LINE
             await SendMulticastMessageAsync(json);
         }
 
+        /// <summary>
+        /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
+        /// </summary>
+        /// <returns>Task.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message">Here</a>.</remarks>
+        public async Task SendNarrowcastMessageAsync(string narrowcastMessage)
+        { 
+            await PostAsync("message/narrowcast", narrowcastMessage);
+        }
+        
+        /// <summary>
+        /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
+        /// </summary>
+        /// <returns>Task.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message">Here</a>.</remarks>
+        public async Task SendNarrowcastMessageAsync(NarrowcastMessage narrowcastMessage)
+        { 
+            var json = JsonConvert.SerializeObject(narrowcastMessage, _settings);
+
+            await SendNarrowcastMessageAsync(json);
+        }
+        
         /// <summary>
         /// Sends push messages to multiple users at any time.
         /// </summary>
