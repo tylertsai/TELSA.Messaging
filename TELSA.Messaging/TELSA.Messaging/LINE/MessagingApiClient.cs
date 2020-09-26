@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -271,11 +269,29 @@ namespace TELSA.Messaging.LINE
         /// <returns></returns>
         public async Task<MessageQuota> GetTheTargetLimitForAdditionalMessages()
         {
-            var response = await GetAsync($"message/quota");
+            var response = await GetAsync("message/quota");
             var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
             var quota = JsonConvert.DeserializeObject<MessageQuota>(json);
 
             return quota;
+        }
+
+        /// <summary>
+        /// Gets the number of messages sent in the current month.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation includes the number of messages sent from LINE Official Account Manager.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation is approximate. To get the correct number of sent messages, use LINE Official Account Manager or execute API operations for getting the number of sent messages.
+        /// </summary>
+        /// <returns>The number of sent messages in the current month.</returns>
+        public async Task<long> GetNumberOfMessagesSentThisMonth()
+        {
+            var response = await GetAsync("message/quota/consumption");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            var type = new {totalUsage = 0L};
+            var obj = JsonConvert.DeserializeAnonymousType(json, type);
+
+            return obj.totalUsage;
         }
     }
 }
