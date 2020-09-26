@@ -74,7 +74,7 @@ namespace TELSA.Messaging.LINE
 
             return await SendAsync(request);
         }
-        
+
         /// <summary>
         /// POST message to API.
         /// </summary>
@@ -184,7 +184,7 @@ namespace TELSA.Messaging.LINE
         {
             return await PostAsync("message/narrowcast", narrowcastMessage);
         }
-        
+
         /// <summary>
         /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
         /// </summary>
@@ -230,7 +230,7 @@ namespace TELSA.Messaging.LINE
         {
             return await PostAsync("message/broadcast", broadcastMessage);
         }
-        
+
         /// <summary>
         /// Sends push messages to multiple users at any time.
         /// </summary>
@@ -242,7 +242,7 @@ namespace TELSA.Messaging.LINE
 
             return await SendBroadcastMessageAsync(json);
         }
-        
+
         /// <summary>
         /// Gets images, videos, audio, and files sent by users.
         /// </summary>
@@ -294,6 +294,23 @@ namespace TELSA.Messaging.LINE
             var obj = JsonConvert.DeserializeAnonymousType(json, type);
 
             return obj.totalUsage;
+        }
+
+        /// <summary>
+        /// Gets the number of messages sent with the /bot/message/reply endpoint.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.<br/>
+        /// </summary>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9.</param>
+        /// <returns>Information of Sent reply messages.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-reply-messages">Here</a>.</remarks>
+        public async Task<SentReplyMessagesInfo> GetNumberOfSentReplyMessages(DateTime date)
+        {
+            var response = await GetAsync($"message/delivery/reply?date={date:yyyyMMdd}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<SentReplyMessagesInfo>(json);
+
+            return obj;
         }
     }
 }
