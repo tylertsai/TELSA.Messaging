@@ -266,7 +266,8 @@ namespace TELSA.Messaging.LINE
         /// <br/><br/>
         /// Set a target limit with LINE Official Account Manager. For the procedures, refer to the LINE Official Account Manager manual.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Message quota information.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-quota">Here</a>.</remarks>
         public async Task<MessageQuota> GetTheTargetLimitForAdditionalMessages()
         {
             var response = await GetAsync("message/quota");
@@ -284,6 +285,7 @@ namespace TELSA.Messaging.LINE
         /// The number of messages retrieved by this operation is approximate. To get the correct number of sent messages, use LINE Official Account Manager or execute API operations for getting the number of sent messages.
         /// </summary>
         /// <returns>The number of sent messages in the current month.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-consumption">Here</a>.</remarks>
         public async Task<long> GetNumberOfMessagesSentThisMonth()
         {
             var response = await GetAsync("message/quota/consumption");
