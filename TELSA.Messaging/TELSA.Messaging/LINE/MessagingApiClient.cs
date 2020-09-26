@@ -260,5 +260,22 @@ namespace TELSA.Messaging.LINE
         {
             return await GetAsync($"https://api-data.line.me/v2/bot/message/{messageId}/content");
         }
+
+        /// <summary>
+        /// Gets the target limit for additional messages in the current month.<br/><br/>
+        /// <br/><br/>
+        /// The number of messages retrieved by this operation includes the number of messages sent from LINE Official Account Manager.<br/><br/>
+        /// <br/><br/>
+        /// Set a target limit with LINE Official Account Manager. For the procedures, refer to the LINE Official Account Manager manual.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<MessageQuota> GetTheTargetLimitForAdditionalMessages()
+        {
+            var response = await GetAsync($"message/quota");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            var quota = JsonConvert.DeserializeObject<MessageQuota>(json);
+
+            return quota;
+        }
     }
 }
