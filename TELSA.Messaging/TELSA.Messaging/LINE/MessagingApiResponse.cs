@@ -20,7 +20,7 @@ namespace TELSA.Messaging.LINE
         /// <summary>
         /// HTTP response.
         /// </summary>
-        internal HttpResponseMessage HttpResponseMessage { get; }
+        public HttpResponseMessage HttpResponseMessage { get; }
 
         /// <summary>
         /// Response headers.

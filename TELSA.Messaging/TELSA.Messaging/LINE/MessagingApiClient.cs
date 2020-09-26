@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -68,7 +69,6 @@ namespace TELSA.Messaging.LINE
         /// POST message to API.
         /// </summary>
         /// <param name="api">API.</param>
-        /// <param name="json">JSON.</param>
         /// <returns>Messaging API response.</returns>
         private async Task<MessagingApiResponse> GetAsync(string api)
         {
@@ -243,6 +243,22 @@ namespace TELSA.Messaging.LINE
             var json = JsonConvert.SerializeObject(broadcastMessage, _settings);
 
             return await SendBroadcastMessageAsync(json);
+        }
+        
+        /// <summary>
+        /// Gets images, videos, audio, and files sent by users.
+        /// </summary>
+        /// <param name="messageId">Message ID</param>
+        /// <returns>
+        /// Messaging API response.<br/><br/>
+        /// Returns status code 200 and the content in binary.<br/><br/>
+        /// <br/><br/>
+        /// Content is automatically deleted after a certain period from when the message was sent. There is no guarantee for how long content is stored.
+        /// </returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-content">Here</a>.</remarks>
+        public async Task<MessagingApiResponse> GetContent(string messageId)
+        {
+            return await GetAsync($"https://api-data.line.me/v2/bot/message/{messageId}/content");
         }
     }
 }
