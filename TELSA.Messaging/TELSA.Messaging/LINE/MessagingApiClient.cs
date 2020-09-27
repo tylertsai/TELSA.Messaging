@@ -348,5 +348,18 @@ namespace TELSA.Messaging.LINE
         {
             return await GetSentMessagesInfo("message/delivery/multicast", date);
         }
+        
+        /// <summary>
+        /// Gets the number of messages sent with the /bot/message/broadcast endpoint.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.
+        /// </summary>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9</param>
+        /// <returns>Information of Sent push messages.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-broadcast-messages">Here</a>.</remarks>
+        public async Task<SentMessagesInfo> GetNumberOfSentBroadcastMessages(DateTime date)
+        {
+            return await GetSentMessagesInfo("message/delivery/broadcast", date);
+        }
     }
 }
