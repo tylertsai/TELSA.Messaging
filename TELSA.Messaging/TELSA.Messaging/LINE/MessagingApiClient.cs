@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -76,20 +75,29 @@ namespace TELSA.Messaging.LINE
 
             return await SendAsync(request);
         }
-        
+
         /// <summary>
         /// POST message to API.
         /// </summary>
         /// <param name="api">API.</param>
         /// <param name="json">JSON.</param>
+        /// <param name="headers">Request headers.</param>
         /// <returns>Messaging API response.</returns>
-        private async Task<MessagingApiResponse> PostAsync(string api, string json)
+        private async Task<MessagingApiResponse> PostAsync(string api, string json, IEnumerable<KeyValuePair<string, string>> headers = null)
         {
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var request = new HttpRequestMessage(HttpMethod.Post, api)
             {
                 Content = content
             };
+
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    request.Headers.Add(header.Key, header.Value);
+                }
+            }
 
             return await SendAsync(request);
         }
@@ -129,75 +137,130 @@ namespace TELSA.Messaging.LINE
         }
 
         /// <summary>
-        /// Sends a push message to a user, group, or room at any time.
+        /// Send message.
         /// </summary>
-        /// <param name="pushMessage">Push message.</param>
-        /// <returns>Messaging API response.</returns>
-        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-push-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendPushMessageAsync(string pushMessage)
+        /// <param name="api">API Url.</param>
+        /// <param name="message">Message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
+        /// <returns></returns>
+        private async Task<MessagingApiResponse> SendMessageAsync(string api, string message, Guid? retryKey = null)
         {
-            return await PostAsync("message/push", pushMessage);
+            List<KeyValuePair<string, string>> headers = null;
+            if (retryKey != null)
+            {
+                headers = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("X-Line-Retry-Key", retryKey.ToString())
+                };
+            }
+
+            return await PostAsync(api, message, headers);
         }
 
         /// <summary>
         /// Sends a push message to a user, group, or room at any time.
         /// </summary>
         /// <param name="pushMessage">Push message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-push-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendPushMessageAsync(PushMessage pushMessage)
+        public async Task<MessagingApiResponse> SendPushMessageAsync(string pushMessage, Guid? retryKey = null)
+        {
+            return await SendMessageAsync("message/push", pushMessage, retryKey);
+        }
+
+        /// <summary>
+        /// Sends a push message to a user, group, or room at any time.
+        /// </summary>
+        /// <param name="pushMessage">Push message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
+        /// <returns>Messaging API response.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-push-message">Here</a>.</remarks>
+        public async Task<MessagingApiResponse> SendPushMessageAsync(PushMessage pushMessage, Guid? retryKey = null)
         {
             var json = JsonConvert.SerializeObject(pushMessage, _settings);
 
-            return await SendPushMessageAsync(json);
+            return await SendPushMessageAsync(json, retryKey);
         }
 
         /// <summary>
         /// Sends push messages to multiple users at any time. Messages cannot be sent to groups or rooms.
         /// </summary>
         /// <param name="multicastMessage">Multicast Message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-multicast-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendMulticastMessageAsync(string multicastMessage)
+        public async Task<MessagingApiResponse> SendMulticastMessageAsync(string multicastMessage, Guid? retryKey = null)
         {
-            return await PostAsync("message/multicast", multicastMessage);
+            return await SendMessageAsync("message/multicast", multicastMessage, retryKey);
         }
 
         /// <summary>
         /// Sends push messages to multiple users at any time. Messages cannot be sent to groups or rooms.
         /// </summary>
         /// <param name="multicastMessage">Multicast Message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-multicast-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendMulticastMessageAsync(MulticastMessage multicastMessage)
+        public async Task<MessagingApiResponse> SendMulticastMessageAsync(MulticastMessage multicastMessage, Guid? retryKey = null)
         {
             var json = JsonConvert.SerializeObject(multicastMessage, _settings);
 
-            return await SendMulticastMessageAsync(json);
+            return await SendMulticastMessageAsync(json, retryKey);
         }
 
         /// <summary>
         /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
         /// </summary>
         /// <param name="narrowcastMessage">Narrowcast message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendNarrowcastMessageAsync(string narrowcastMessage)
+        public async Task<MessagingApiResponse> SendNarrowcastMessageAsync(string narrowcastMessage, Guid? retryKey)
         {
-            return await PostAsync("message/narrowcast", narrowcastMessage);
-        }
-        
+            return await SendMessageAsync("message/narrowcast", narrowcastMessage, retryKey);
+       }
+
         /// <summary>
         /// Sends a push message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages cannot be sent to groups or rooms.
         /// </summary>
         /// <param name="narrowcastMessage">Narrowcast message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendNarrowcastMessageAsync(NarrowcastMessage narrowcastMessage)
+        public async Task<MessagingApiResponse> SendNarrowcastMessageAsync(NarrowcastMessage narrowcastMessage, Guid? retryKey = null)
         {
             var json = JsonConvert.SerializeObject(narrowcastMessage, _settings);
 
-            return await SendNarrowcastMessageAsync(json);
+            return await SendNarrowcastMessageAsync(json, retryKey);
         }
 
         /// <summary>
@@ -226,25 +289,37 @@ namespace TELSA.Messaging.LINE
         /// <summary>
         /// Sends push messages to multiple users at any time.
         /// </summary>
+        /// <param name="broadcastMessage">Broadcast message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendBroadcastMessageAsync(string broadcastMessage)
+        public async Task<MessagingApiResponse> SendBroadcastMessageAsync(string broadcastMessage, Guid? retryKey = null)
         {
-            return await PostAsync("message/broadcast", broadcastMessage);
+            return await SendMessageAsync("message/broadcast", broadcastMessage, retryKey);
         }
-        
+
         /// <summary>
         /// Sends push messages to multiple users at any time.
         /// </summary>
+        /// <param name="broadcastMessage">Broadcast message.</param>
+        /// <param name="retryKey">
+        /// * The retry key lets you retry a request while preventing the same request from being accepted in duplicate. For more information, see Retrying a failed API request.<br/>
+        /// * The retry key is valid for 24 hours after attempting the first request.<br/>
+        /// See <a href="https://developers.line.biz/en/reference/messaging-api/#retry-api-request">Here</a>.
+        /// </param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendBroadcastMessage(BroadcastMessage broadcastMessage)
+        public async Task<MessagingApiResponse> SendBroadcastMessage(BroadcastMessage broadcastMessage, Guid? retryKey = null)
         {
             var json = JsonConvert.SerializeObject(broadcastMessage, _settings);
 
-            return await SendBroadcastMessageAsync(json);
+            return await SendBroadcastMessageAsync(json, retryKey);
         }
-        
+
         /// <summary>
         /// Gets images, videos, audio, and files sent by users.
         /// </summary>
@@ -268,14 +343,100 @@ namespace TELSA.Messaging.LINE
         /// <br/><br/>
         /// Set a target limit with LINE Official Account Manager. For the procedures, refer to the LINE Official Account Manager manual.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Message quota information.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-quota">Here</a>.</remarks>
         public async Task<MessageQuota> GetTheTargetLimitForAdditionalMessages()
         {
-            var response = await GetAsync($"message/quota");
+            var response = await GetAsync("message/quota");
             var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
             var quota = JsonConvert.DeserializeObject<MessageQuota>(json);
 
             return quota;
+        }
+        
+        /// <summary>
+        /// Gets the number of messages sent in the current month.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation includes the number of messages sent from LINE Official Account Manager.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation is approximate. To get the correct number of sent messages, use LINE Official Account Manager or execute API operations for getting the number of sent messages.
+        /// </summary>
+        /// <returns>The number of sent messages in the current month.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-consumption">Here</a>.</remarks>
+        public async Task<long> GetNumberOfMessagesSentThisMonth()
+        {
+            var response = await GetAsync("message/quota/consumption");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            var type = new {totalUsage = 0L};
+            var obj = JsonConvert.DeserializeAnonymousType(json, type);
+
+            return obj.totalUsage;
+        }
+
+        /// <summary>
+        /// Get information of sent messages.
+        /// </summary>
+        /// <param name="api">API url.</param>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9.</param>
+        /// <returns>Information of sent messages.</returns>
+        private async Task<SentMessagesInfo> GetSentMessagesInfo(string api, DateTime date)
+        {
+            var response = await GetAsync($"{api}?date={date:yyyyMMdd}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            
+            return JsonConvert.DeserializeObject<SentMessagesInfo>(json);
+        }
+        
+        /// <summary>
+        /// Gets the number of messages sent with the /bot/message/reply endpoint.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.<br/>
+        /// </summary>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9.</param>
+        /// <returns>Information of Sent reply messages.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-reply-messages">Here</a>.</remarks>
+        public async Task<SentMessagesInfo> GetNumberOfSentReplyMessages(DateTime date)
+        {
+            return await GetSentMessagesInfo("message/delivery/reply", date);
+        }
+
+        /// <summary>
+        /// Gets the number of messages sent with the /bot/message/push endpoint.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.
+        /// </summary>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9</param>
+        /// <returns>Information of Sent push messages.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-push-messages">Here</a>.</remarks>
+        public async Task<SentMessagesInfo> GetNumberOfSentPushMessages(DateTime date)
+        {
+            return await GetSentMessagesInfo("message/delivery/push", date);
+        }
+        
+        /// <summary>
+        /// Gets the number of messages sent with the /bot/message/multicast endpoint.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.
+        /// </summary>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9</param>
+        /// <returns>Information of Sent push messages.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-multicast-messages">Here</a>.</remarks>
+        public async Task<SentMessagesInfo> GetNumberOfSentMulticastMessages(DateTime date)
+        {
+            return await GetSentMessagesInfo("message/delivery/multicast", date);
+        }
+        
+        /// <summary>
+        /// Gets the number of messages sent with the /bot/message/broadcast endpoint.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.
+        /// </summary>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9</param>
+        /// <returns>Information of Sent push messages.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-broadcast-messages">Here</a>.</remarks>
+        public async Task<SentMessagesInfo> GetNumberOfSentBroadcastMessages(DateTime date)
+        {
+            return await GetSentMessagesInfo("message/delivery/broadcast", date);
         }
     }
 }
