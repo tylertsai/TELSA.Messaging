@@ -276,7 +276,7 @@ namespace TELSA.Messaging.LINE
 
             return quota;
         }
-
+        
         /// <summary>
         /// Gets the number of messages sent in the current month.<br/>
         /// <br/>
@@ -297,6 +297,20 @@ namespace TELSA.Messaging.LINE
         }
 
         /// <summary>
+        /// Get information of sent messages.
+        /// </summary>
+        /// <param name="api">API url.</param>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9.</param>
+        /// <returns>Information of sent messages.</returns>
+        private async Task<SentMessagesInfo> GetSentMessagesInfo(string api, DateTime date)
+        {
+            var response = await GetAsync($"{api}?date={date:yyyyMMdd}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            
+            return JsonConvert.DeserializeObject<SentMessagesInfo>(json);
+        }
+        
+        /// <summary>
         /// Gets the number of messages sent with the /bot/message/reply endpoint.<br/>
         /// <br/>
         /// The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.<br/>
@@ -306,11 +320,7 @@ namespace TELSA.Messaging.LINE
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-reply-messages">Here</a>.</remarks>
         public async Task<SentMessagesInfo> GetNumberOfSentReplyMessages(DateTime date)
         {
-            var response = await GetAsync($"message/delivery/reply?date={date:yyyyMMdd}");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<SentMessagesInfo>(json);
-
-            return obj;
+            return await GetSentMessagesInfo("message/delivery/reply", date);
         }
 
         /// <summary>
@@ -323,11 +333,20 @@ namespace TELSA.Messaging.LINE
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-push-messages">Here</a>.</remarks>
         public async Task<SentMessagesInfo> GetNumberOfSentPushMessages(DateTime date)
         {
-            var response = await GetAsync($"message/delivery/push?date={date:yyyyMMdd}");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<SentMessagesInfo>(json);
-
-            return obj;
+            return await GetSentMessagesInfo("message/delivery/push", date);
+        }
+        
+        /// <summary>
+        /// Gets the number of messages sent with the /bot/message/multicast endpoint.<br/>
+        /// <br/>
+        /// The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.
+        /// </summary>
+        /// <param name="date">Date the messages were sent. Timezone: UTC+9</param>
+        /// <returns>Information of Sent push messages.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-multicast-messages">Here</a>.</remarks>
+        public async Task<SentMessagesInfo> GetNumberOfSentMulticastMessages(DateTime date)
+        {
+            return await GetSentMessagesInfo("message/delivery/multicast", date);
         }
     }
 }
