@@ -1,9 +1,9 @@
 namespace TELSA.Messaging.LINE
 {
     /// <summary>
-    /// Information of Sent reply messages.
+    /// Information of Sent reply or push messages.
     /// </summary>
-    public class SentReplyMessagesInfo
+    public class SentMessagesInfo
     {
         /// <summary>
         /// Status of the counting process.
