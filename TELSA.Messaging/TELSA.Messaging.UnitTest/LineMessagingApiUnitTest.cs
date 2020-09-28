@@ -190,10 +190,15 @@ namespace TELSA.Messaging.UnitTest
                 _to,
                 new List<IMessage>
                 {
-                    new TextMessage("Get narrowcast message status\n" +
-                                    JsonConvert.SerializeObject(status))
+                    new TextMessage($"Get narrowcast message status\n" +
+                                    $"Phase: {status.Phase}\n" +
+                                    $"Success Count: {status.SuccessCount}\n" +
+                                    $"Failure Count: {status.FailureCount}\n" +
+                                    $"Target Count: {status.TargetCount}\n" +
+                                    $"Failed Description: {status.FailedDescription}\n" +
+                                    $"Error Code: {status.ErrorCode}\n")
                 }
-            ));
+            )); ;
 
             Assert.Pass();
         }
