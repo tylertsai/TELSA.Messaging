@@ -15,9 +15,11 @@ namespace TELSA.Messaging.LINE
     /// </summary>
     public class MessagingApiClient
     {
-        private HttpClient _httpClient;
-        private JsonSerializerSettings _settings;
+        private readonly HttpClient _httpClient;
+        private readonly JsonSerializerSettings _settings;
 
+        #region Constructors
+        
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -44,6 +46,10 @@ namespace TELSA.Messaging.LINE
             };
         }
 
+        #endregion
+        
+        #region Message
+        
         /// <summary>
         /// Send a HTTP request as an asynchronous operation.
         /// </summary>
@@ -438,5 +444,48 @@ namespace TELSA.Messaging.LINE
         {
             return await GetSentMessagesInfo("message/delivery/broadcast", date);
         }
+        
+        #endregion
+        
+        #region Users
+
+        /// <summary>
+        /// Get the profile information of users who have added your LINE Official Account as a friend.<br/>
+        /// <br/>
+        /// Profile information of group members and chat room members:<br/>
+        /// Use the following APIs to get profile information of group members or chat room members. With these APIs, you can get profile information of members who have not added your LINE Official Account as a friend or blocked your LINE Official Account.<br/>
+        /// <br/>
+        /// <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile">Get Profile Information of Group Members</a><br/>
+        /// <a href="https://developers.line.biz/en/reference/messaging-api/#get-room-member-profile">Get Profile Information of Chat Room Members</a>
+        /// </summary>
+        /// <param name="userId">User ID that is returned in a <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event object</a>. Do not use the LINE ID found on LINE.</param>
+        /// <returns>LINE User Profile.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-profile">Here</a>.</remarks>
+        public async Task<UserProfile> GetProfile(string userId)
+        {
+            var response = await GetAsync($"profile/{userId}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            
+            return JsonConvert.DeserializeObject<UserProfile>(json);
+        }
+
+        /// <summary>
+        /// Gets the <a href="https://developers.line.biz/en/glossary/#user-id">User ID</a> of users who have added your LINE Official Account as a friend.<br/>
+        ///<br/>
+        /// Note:<br/>
+        /// This feature is available only for verified or premium accounts. For more information about account types, see the <a href="https://www.linebiz.com/jp-en/service/line-official-account/account-type/">Account Types of LINE Official Accout</a> page on LINE for Business.
+        /// </summary>
+        /// <param name="start">Value of the continuation token found in the next property of the JSON object returned in the <a href="https://developers.line.biz/en/reference/messaging-api/#get-follower-ids-response">response</a>. Include this parameter to get the next array of user IDs.</param>
+        /// <returns>Follower IDs.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-follower-ids">Here</a>.</remarks>
+        public async Task<FollowerIds> GetFollowerIds(string start = null)
+        {
+            var response = await GetAsync($"followers/ids?start={start}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<FollowerIds>(json);
+        }
+
+        #endregion
     }
 }
