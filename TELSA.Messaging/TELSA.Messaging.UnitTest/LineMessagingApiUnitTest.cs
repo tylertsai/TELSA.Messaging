@@ -409,10 +409,38 @@ namespace TELSA.Messaging.UnitTest
                 _roomId,
                 new List<IMessage>
                 {
-                    new TextMessage($"Total {count} users in the room.")
+                    new TextMessage($"Total {count} user(s) in the room.")
                 })
             );
 
+            Assert.Pass();
+        }
+        
+        [Test]
+        public async Task TestGetRoomMemberUserIds()
+        {
+            var start = string.Empty;
+            var memberCount = 0;
+
+            while (true)
+            {
+                var memberUserIds = await _messagingClient.GetRoomMemberUserIds(_roomId, start);
+
+                start = memberUserIds.Next;
+                memberCount += memberUserIds.MemberIds.Count();
+
+                if (string.IsNullOrWhiteSpace(memberUserIds.Next))
+                    break;
+            }
+            
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _to,
+                new List<IMessage>
+                {
+                    new TextMessage($"Total {memberCount} member(s) in the room.")
+                })
+            );
+            
             Assert.Pass();
         }
 
