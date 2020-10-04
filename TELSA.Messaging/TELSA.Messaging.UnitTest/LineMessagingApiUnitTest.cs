@@ -18,7 +18,8 @@ namespace TELSA.Messaging.UnitTest
         private readonly string _to;
         private readonly string _replyToken;
         private readonly string _contentMessageId;
-
+        private readonly string _roomId;
+        
         public LineMessagingApiUnitTest()
         {
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -28,6 +29,7 @@ namespace TELSA.Messaging.UnitTest
             _to = lineSection["ToUserId"];
             _replyToken = lineSection["ReplyToken"];
             _contentMessageId = lineSection["ContentMessageId"];
+            _roomId = lineSection["RoomId"];
         }
 
         [SetUp]
@@ -394,6 +396,26 @@ namespace TELSA.Messaging.UnitTest
             Assert.Pass();
         }
         
+        #endregion
+        
+        #region Chat Room
+
+        [Test]
+        public async Task TestGetNumberOfUsersInARoom()
+        {
+            var count = await _messagingClient.GetNumberOfUsersInARoom(_roomId);
+
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _roomId,
+                new List<IMessage>
+                {
+                    new TextMessage($"Total {count} users in the room.")
+                })
+            );
+
+            Assert.Pass();
+        }
+
         #endregion
     }
 }

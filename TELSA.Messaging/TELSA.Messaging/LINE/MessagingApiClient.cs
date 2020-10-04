@@ -487,5 +487,27 @@ namespace TELSA.Messaging.LINE
         }
 
         #endregion
+        
+        #region Chat Room
+        
+        /// <summary>
+        /// Gets the count of users in a room. You can get the user in room count even if the user hasn't added the LINE Official Account as a friend or has blocked the LINE Official Account.<br/>
+        /// <br/>
+        /// The number returned excludes the LINE Official Account.
+        /// </summary>
+        /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Number Of Users</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-members-room-count">Here</a>.</remarks>
+        public async Task<long> GetNumberOfUsersInARoom(string roomId)
+        {
+            var response = await GetAsync($"room/{roomId}/members/count");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            var type = new {count = 0L};
+            var obj = JsonConvert.DeserializeAnonymousType(json, type);
+
+            return obj.count;
+        }
+        
+        #endregion
     }
 }
