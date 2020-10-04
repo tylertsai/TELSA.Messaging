@@ -1,22 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using TELSA.Messaging.LINE;
 using TELSA.Messaging.LINE.Actions;
 using TELSA.Messaging.LINE.Messages;
+using TELSA.Messaging.LINE.Templates;
 
 namespace TELSA.Messaging.UnitTest
 {
     public class LineMessagingApiUnitTest
     {
-        private MessagingApiClient _messagingClient;
-        private string _to;
-        private string _replyToken;
-        private string _contentMessageId;
+        private readonly MessagingApiClient _messagingClient;
+        private readonly string _to;
+        private readonly string _replyToken;
+        private readonly string _contentMessageId;
 
         public LineMessagingApiUnitTest()
         {
@@ -33,6 +34,8 @@ namespace TELSA.Messaging.UnitTest
         public void Setup()
         {
         }
+        
+        #region Message
 
         [Test]
         public async Task TestPushTextMessage()
@@ -190,7 +193,7 @@ namespace TELSA.Messaging.UnitTest
                 _to,
                 new List<IMessage>
                 {
-                    new TextMessage($"Get narrowcast message status\n" +
+                    new TextMessage("Get narrowcast message status\n" +
                                     $"Phase: {status.Phase}\n" +
                                     $"Success Count: {status.SuccessCount}\n" +
                                     $"Failure Count: {status.FailureCount}\n" +
@@ -198,7 +201,7 @@ namespace TELSA.Messaging.UnitTest
                                     $"Failed Description: {status.FailedDescription}\n" +
                                     $"Error Code: {status.ErrorCode}\n")
                 }
-            )); ;
+            ));
 
             Assert.Pass();
         }
@@ -227,7 +230,7 @@ namespace TELSA.Messaging.UnitTest
                 _to,
                 new List<IMessage>
                 {
-                    new TextMessage($"The target limit for additional messages\n" +
+                    new TextMessage("The target limit for additional messages\n" +
                                     $"Quota type: {response.Type}\n" +
                                     $"Quota value: {response.Value}")
                 }
@@ -246,6 +249,8 @@ namespace TELSA.Messaging.UnitTest
                     new TextMessage($"Number of messages sent this month: {value}")
                 }
             ));
+            
+            Assert.Pass();
         }
 
         [Test]
@@ -258,12 +263,14 @@ namespace TELSA.Messaging.UnitTest
                 _to,
                 new List<IMessage>
                 {
-                    new TextMessage($"Number of reply messages sent\n" +
+                    new TextMessage("Number of reply messages sent\n" +
                                     $"Date: {date:yyyy-MM-dd}\n" +
                                     $"Status: {response.Status}\n" +
                                     $"Success: {response.Success}")
                 }
             ));
+            
+            Assert.Pass();
         }
 
         [Test]
@@ -276,14 +283,15 @@ namespace TELSA.Messaging.UnitTest
                 _to,
                 new List<IMessage>
                 {
-                    new TextMessage($"Number of push messages sent\n" +
+                    new TextMessage("Number of push messages sent\n" +
                                     $"Date: {date:yyyy-MM-dd}\n" +
                                     $"Status: {response.Status}\n" +
                                     $"Success: {response.Success}")
                 }
             ));
+ 
+            Assert.Pass();
         }
-
         [Test]
         public async Task TestGetNumberOfSentMulticastMessages()
         {
@@ -294,12 +302,14 @@ namespace TELSA.Messaging.UnitTest
                 _to,
                 new List<IMessage>
                 {
-                    new TextMessage($"Number of multicast messages sent\n" +
+                    new TextMessage("Number of multicast messages sent\n" +
                                     $"Date: {date:yyyy-MM-dd}\n" +
                                     $"Status: {response.Status}\n" +
                                     $"Success: {response.Success}")
                 }
             ));
+            
+            Assert.Pass();
         }
         
         [Test]
@@ -312,12 +322,78 @@ namespace TELSA.Messaging.UnitTest
                 _to,
                 new List<IMessage>
                 {
-                    new TextMessage($"Number of broadcast messages sent\n" +
+                    new TextMessage("Number of broadcast messages sent\n" +
                                     $"Date: {date:yyyy-MM-dd}\n" +
                                     $"Status: {response.Status}\n" +
                                     $"Success: {response.Success}")
                 }
             ));
+
+            Assert.Pass();
         }
+        
+        #endregion
+        
+        #region Users
+
+        [Test]
+        public async Task TestGetProfile()
+        {
+            var userProfile = await _messagingClient.GetProfile(_to);
+
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _to,
+                new List<IMessage>
+                {
+                    new TemplateMessage(
+                        "Your User Profile",
+                        new ButtonsTemplate(
+                            userProfile.DisplayName,
+                            new List<IAction>
+                            {
+                                new MessageAction(userProfile.Language, "See language")
+                            })
+                        {
+                            Title = "My Profile",
+                            ThumbnailImageUrl = userProfile.PictureUrl,
+                            Text = $"{userProfile.DisplayName}\n" +
+                                   $"{userProfile.StatusMessage}"
+                        }
+                    )
+                })
+            );
+            
+            Assert.Pass();
+        }
+        
+        [Test]
+        public async Task TestGetFollowerIds()
+        {
+            var start = string.Empty;
+            var followersCount = 0;
+
+            while (true)
+            {
+                var followerIds = await _messagingClient.GetFollowerIds(start);
+
+                start = followerIds.Next;
+                followersCount += followerIds.UserIds.Count();
+
+                if (string.IsNullOrWhiteSpace(followerIds.Next))
+                    break;
+            }
+            
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _to,
+                new List<IMessage>
+                {
+                    new TextMessage($"Total Followers: {followersCount}")
+                })
+            );
+            
+            Assert.Pass();
+        }
+        
+        #endregion
     }
 }
