@@ -18,7 +18,8 @@ namespace TELSA.Messaging.UnitTest
         private readonly string _to;
         private readonly string _replyToken;
         private readonly string _contentMessageId;
-
+        private readonly string _roomId;
+        
         public LineMessagingApiUnitTest()
         {
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -28,6 +29,7 @@ namespace TELSA.Messaging.UnitTest
             _to = lineSection["ToUserId"];
             _replyToken = lineSection["ReplyToken"];
             _contentMessageId = lineSection["ContentMessageId"];
+            _roomId = lineSection["RoomId"];
         }
 
         [SetUp]
@@ -391,6 +393,91 @@ namespace TELSA.Messaging.UnitTest
                 })
             );
             
+            Assert.Pass();
+        }
+        
+        #endregion
+        
+        #region Chat Room
+
+        [Test]
+        public async Task TestGetNumberOfUsersInARoom()
+        {
+            var count = await _messagingClient.GetNumberOfUsersInARoom(_roomId);
+
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _roomId,
+                new List<IMessage>
+                {
+                    new TextMessage($"Total {count} user(s) in the room.")
+                })
+            );
+
+            Assert.Pass();
+        }
+        
+        [Test]
+        public async Task TestGetRoomMemberUserIds()
+        {
+            var start = string.Empty;
+            var memberCount = 0;
+
+            while (true)
+            {
+                var memberUserIds = await _messagingClient.GetRoomMemberUserIds(_roomId, start);
+
+                start = memberUserIds.Next;
+                memberCount += memberUserIds.MemberIds.Count();
+
+                if (string.IsNullOrWhiteSpace(memberUserIds.Next))
+                    break;
+            }
+            
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _roomId,
+                new List<IMessage>
+                {
+                    new TextMessage($"Total {memberCount} member(s) in the room.")
+                })
+            );
+            
+            Assert.Pass();
+        }
+
+        [Test]
+        public async Task TestGetRoomMemberProfile()
+        {
+            var memberProfile = await _messagingClient.GetRoomMemberProfile(_roomId, _to);
+
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _roomId,
+                new List<IMessage>
+                {
+                    new TemplateMessage(
+                        "Member Profile",
+                        new ButtonsTemplate(
+                            memberProfile.DisplayName,
+                            new List<IAction>
+                            {
+                                new PostbackAction("ok", "OK")
+                            })
+                        {
+                            Title = "Member Profile",
+                            ThumbnailImageUrl = memberProfile.PictureUrl,
+                            Text = $"{memberProfile.DisplayName}"
+                        }
+                    )
+                })
+            );
+            
+            Assert.Pass();
+        }
+        
+        [Test]
+        public async Task TestLeaveRoom()
+        {
+            await _messagingClient.LeaveRoom(_roomId);
+
             Assert.Pass();
         }
         
