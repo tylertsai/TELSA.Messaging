@@ -526,6 +526,21 @@ namespace TELSA.Messaging.LINE
             return JsonConvert.DeserializeObject<MemberUserIds>(json);
         }
 
+        /// <summary>
+        /// Gets the user profile of a member of a room that the LINE Official Account is in if the user ID of the room member is known. You can get user profiles of users who have not added the LINE Official Account as a friend or have blocked the LINE Official Account.
+        /// </summary>
+        /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <param name="userId">User ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>. Do not use the LINE ID used in LINE.</param>
+        /// <returns>Member profile.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-room-member-profile">Here</a>.</remarks>
+        public async Task<MemberProfile> GetRoomMemberProfile(string roomId, string userId)
+        {
+            var response = await GetAsync($"room/{roomId}/member/{userId}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<MemberProfile>(json);
+        }
+
         #endregion
     }
 }

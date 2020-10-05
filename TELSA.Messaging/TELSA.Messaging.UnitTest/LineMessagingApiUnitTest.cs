@@ -444,6 +444,35 @@ namespace TELSA.Messaging.UnitTest
             Assert.Pass();
         }
 
+        [Test]
+        public async Task TestGetRoomMemberProfile()
+        {
+            var memberProfile = await _messagingClient.GetRoomMemberProfile(_roomId, _to);
+
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _to,
+                new List<IMessage>
+                {
+                    new TemplateMessage(
+                        "Member Profile",
+                        new ButtonsTemplate(
+                            memberProfile.DisplayName,
+                            new List<IAction>
+                            {
+                                new PostbackAction("ok", "OK")
+                            })
+                        {
+                            Title = "Member Profile",
+                            ThumbnailImageUrl = memberProfile.PictureUrl,
+                            Text = $"{memberProfile.DisplayName}"
+                        }
+                    )
+                })
+            );
+            
+            Assert.Pass();
+        }
+        
         #endregion
     }
 }
