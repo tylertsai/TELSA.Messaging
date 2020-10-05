@@ -89,9 +89,12 @@ namespace TELSA.Messaging.LINE
         /// <param name="json">JSON.</param>
         /// <param name="headers">Request headers.</param>
         /// <returns>Messaging API response.</returns>
-        private async Task<MessagingApiResponse> PostAsync(string api, string json, IEnumerable<KeyValuePair<string, string>> headers = null)
+        private async Task<MessagingApiResponse> PostAsync(string api, string json = null, IEnumerable<KeyValuePair<string, string>> headers = null)
         {
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var content = string.IsNullOrWhiteSpace(json)
+                ? null
+                : new StringContent(json, Encoding.UTF8, "application/json");
+            
             var request = new HttpRequestMessage(HttpMethod.Post, api)
             {
                 Content = content
@@ -539,6 +542,17 @@ namespace TELSA.Messaging.LINE
             var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<MemberProfile>(json);
+        }
+
+        /// <summary>
+        /// Leaves a <a href="https://developers.line.biz/en/docs/messaging-api/group-chats/#room">room</a>.
+        /// </summary>
+        /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Response.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#leave-room">Here</a>.</remarks>
+        public async Task<MessagingApiResponse> LeaveRoom(string roomId)
+        {
+            return await PostAsync($"room/{roomId}/leave");
         }
 
         #endregion

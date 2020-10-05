@@ -434,7 +434,7 @@ namespace TELSA.Messaging.UnitTest
             }
             
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _roomId,
                 new List<IMessage>
                 {
                     new TextMessage($"Total {memberCount} member(s) in the room.")
@@ -450,7 +450,7 @@ namespace TELSA.Messaging.UnitTest
             var memberProfile = await _messagingClient.GetRoomMemberProfile(_roomId, _to);
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _roomId,
                 new List<IMessage>
                 {
                     new TemplateMessage(
@@ -470,6 +470,14 @@ namespace TELSA.Messaging.UnitTest
                 })
             );
             
+            Assert.Pass();
+        }
+        
+        [Test]
+        public async Task TestLeaveRoom()
+        {
+            await _messagingClient.LeaveRoom(_roomId);
+
             Assert.Pass();
         }
         
