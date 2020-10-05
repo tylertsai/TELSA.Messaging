@@ -89,9 +89,12 @@ namespace TELSA.Messaging.LINE
         /// <param name="json">JSON.</param>
         /// <param name="headers">Request headers.</param>
         /// <returns>Messaging API response.</returns>
-        private async Task<MessagingApiResponse> PostAsync(string api, string json, IEnumerable<KeyValuePair<string, string>> headers = null)
+        private async Task<MessagingApiResponse> PostAsync(string api, string json = null, IEnumerable<KeyValuePair<string, string>> headers = null)
         {
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var content = string.IsNullOrWhiteSpace(json)
+                ? null
+                : new StringContent(json, Encoding.UTF8, "application/json");
+            
             var request = new HttpRequestMessage(HttpMethod.Post, api)
             {
                 Content = content
@@ -484,6 +487,72 @@ namespace TELSA.Messaging.LINE
             var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<FollowerIds>(json);
+        }
+
+        #endregion
+        
+        #region Chat Room
+        
+        /// <summary>
+        /// Gets the count of users in a room. You can get the user in room count even if the user hasn't added the LINE Official Account as a friend or has blocked the LINE Official Account.<br/>
+        /// <br/>
+        /// The number returned excludes the LINE Official Account.
+        /// </summary>
+        /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Number Of Users</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-members-room-count">Here</a>.</remarks>
+        public async Task<long> GetNumberOfUsersInARoom(string roomId)
+        {
+            var response = await GetAsync($"room/{roomId}/members/count");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+            var type = new {count = 0L};
+            var obj = JsonConvert.DeserializeAnonymousType(json, type);
+
+            return obj.count;
+        }
+
+        /// <summary>
+        /// Gets the user IDs of the members of a room that the LINE Official Account is in. This includes the user IDs of users who have not added the LINE Official Account as a friend or have blocked the LINE Official Account.<br/>
+        /// <br/>
+        /// Note:<br/>
+        /// This feature is available only for verified or premium accounts. For more information about account types, see the Account Types of LINE Official Accout page on LINE for Business.
+        /// </summary>
+        /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <param name="start">Value of the continuation token found in the next property of the JSON object returned in the <a href="https://developers.line.biz/en/reference/messaging-api/#get-room-member-user-ids-response">response</a>. Include this parameter to get the next array of user IDs for the members of the group.</param>
+        /// <returns>Member user IDs.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-room-member-user-ids">Here</a>.</remarks>
+        public async Task<MemberUserIds> GetRoomMemberUserIds(string roomId, string start = null)
+        {
+            var response = await GetAsync($"room/{roomId}/members/ids?start={start}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<MemberUserIds>(json);
+        }
+
+        /// <summary>
+        /// Gets the user profile of a member of a room that the LINE Official Account is in if the user ID of the room member is known. You can get user profiles of users who have not added the LINE Official Account as a friend or have blocked the LINE Official Account.
+        /// </summary>
+        /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <param name="userId">User ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>. Do not use the LINE ID used in LINE.</param>
+        /// <returns>Member profile.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-room-member-profile">Here</a>.</remarks>
+        public async Task<MemberProfile> GetRoomMemberProfile(string roomId, string userId)
+        {
+            var response = await GetAsync($"room/{roomId}/member/{userId}");
+            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<MemberProfile>(json);
+        }
+
+        /// <summary>
+        /// Leaves a <a href="https://developers.line.biz/en/docs/messaging-api/group-chats/#room">room</a>.
+        /// </summary>
+        /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Response.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#leave-room">Here</a>.</remarks>
+        public async Task<MessagingApiResponse> LeaveRoom(string roomId)
+        {
+            return await PostAsync($"room/{roomId}/leave");
         }
 
         #endregion
