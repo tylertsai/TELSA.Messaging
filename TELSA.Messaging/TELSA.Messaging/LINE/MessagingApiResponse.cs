@@ -18,7 +18,7 @@ namespace TELSA.Messaging.LINE
             HttpResponseMessage = response;
             Headers = new MessagingApiResponseHeaders(response.Headers);
         }
-        
+
         /// <summary>
         /// HTTP response.
         /// </summary>
@@ -29,11 +29,11 @@ namespace TELSA.Messaging.LINE
         /// </summary>
         public MessagingApiResponseHeaders Headers { get; }
     }
-    
+
     /// <summary>
     /// Define Messaging API response.
     /// </summary>
-    public class MessagingApiResponse<TContent>:MessagingApiResponse
+    public class MessagingApiResponse<TContent> : MessagingApiResponse
     {
         /// <summary>
         /// Constructor.
