@@ -286,13 +286,11 @@ namespace TELSA.Messaging.LINE
         /// <br/><br/>
         /// See <a href="https://developers.line.biz/en/reference/messaging-api/#get-narrowcast-progress-status">Here</a>.
         /// </remarks>
-        public async Task<RequestProgress> GetNarrowcastMessageStatusAsync(string requestId)
+        public async Task<MessagingApiResponse<RequestProgress>> GetNarrowcastMessageStatusAsync(string requestId)
         {
             var response = await GetAsync($"message/progress/narrowcast?requestId={requestId}");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-            var requestProgress = JsonConvert.DeserializeObject<RequestProgress>(json);
 
-            return requestProgress;
+            return new MessagingApiResponse<RequestProgress>(response.HttpResponseMessage);
         }
 
         /// <summary>
@@ -322,7 +320,7 @@ namespace TELSA.Messaging.LINE
         /// </param>
         /// <returns>Messaging API response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> SendBroadcastMessage(BroadcastMessage broadcastMessage, Guid? retryKey = null)
+        public async Task<MessagingApiResponse> SendBroadcastMessageAsync(BroadcastMessage broadcastMessage, Guid? retryKey = null)
         {
             var json = JsonConvert.SerializeObject(broadcastMessage, _settings);
 
@@ -340,7 +338,7 @@ namespace TELSA.Messaging.LINE
         /// Content is automatically deleted after a certain period from when the message was sent. There is no guarantee for how long content is stored.
         /// </returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-content">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> GetContent(string messageId)
+        public async Task<MessagingApiResponse> GetContentAsync(string messageId)
         {
             return await GetAsync($"https://api-data.line.me/v2/bot/message/{messageId}/content");
         }
@@ -354,13 +352,11 @@ namespace TELSA.Messaging.LINE
         /// </summary>
         /// <returns>Message quota information.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-quota">Here</a>.</remarks>
-        public async Task<MessageQuota> GetTheTargetLimitForAdditionalMessages()
+        public async Task<MessagingApiResponse<MessageQuota>> GetTheTargetLimitForAdditionalMessagesAsync()
         {
             var response = await GetAsync("message/quota");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-            var quota = JsonConvert.DeserializeObject<MessageQuota>(json);
 
-            return quota;
+            return new MessagingApiResponse<MessageQuota>(response.HttpResponseMessage);
         }
         
         /// <summary>
@@ -372,14 +368,11 @@ namespace TELSA.Messaging.LINE
         /// </summary>
         /// <returns>The number of sent messages in the current month.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-consumption">Here</a>.</remarks>
-        public async Task<long> GetNumberOfMessagesSentThisMonth()
+        public async Task<MessagingApiResponse<MessagesSentStatistic>> GetNumberOfMessagesSentThisMonthAsync()
         {
             var response = await GetAsync("message/quota/consumption");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-            var type = new {totalUsage = 0L};
-            var obj = JsonConvert.DeserializeAnonymousType(json, type);
 
-            return obj.totalUsage;
+            return new MessagingApiResponse<MessagesSentStatistic>(response.HttpResponseMessage);
         }
 
         /// <summary>
@@ -388,12 +381,11 @@ namespace TELSA.Messaging.LINE
         /// <param name="api">API url.</param>
         /// <param name="date">Date the messages were sent. Timezone: UTC+9.</param>
         /// <returns>Information of sent messages.</returns>
-        private async Task<SentMessagesInfo> GetSentMessagesInfo(string api, DateTime date)
+        private async Task<MessagingApiResponse<SentMessagesInfo>> GetSentMessagesInfoAsync(string api, DateTime date)
         {
             var response = await GetAsync($"{api}?date={date:yyyyMMdd}");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-            
-            return JsonConvert.DeserializeObject<SentMessagesInfo>(json);
+
+            return new MessagingApiResponse<SentMessagesInfo>(response.HttpResponseMessage);
         }
         
         /// <summary>
@@ -404,9 +396,9 @@ namespace TELSA.Messaging.LINE
         /// <param name="date">Date the messages were sent. Timezone: UTC+9.</param>
         /// <returns>Information of Sent reply messages.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-reply-messages">Here</a>.</remarks>
-        public async Task<SentMessagesInfo> GetNumberOfSentReplyMessages(DateTime date)
+        public async Task<MessagingApiResponse<SentMessagesInfo>> GetNumberOfSentReplyMessagesAsync(DateTime date)
         {
-            return await GetSentMessagesInfo("message/delivery/reply", date);
+            return await GetSentMessagesInfoAsync("message/delivery/reply", date);
         }
 
         /// <summary>
@@ -417,9 +409,9 @@ namespace TELSA.Messaging.LINE
         /// <param name="date">Date the messages were sent. Timezone: UTC+9</param>
         /// <returns>Information of Sent push messages.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-push-messages">Here</a>.</remarks>
-        public async Task<SentMessagesInfo> GetNumberOfSentPushMessages(DateTime date)
+        public async Task<MessagingApiResponse<SentMessagesInfo>> GetNumberOfSentPushMessagesAsync(DateTime date)
         {
-            return await GetSentMessagesInfo("message/delivery/push", date);
+            return await GetSentMessagesInfoAsync("message/delivery/push", date);
         }
         
         /// <summary>
@@ -430,9 +422,9 @@ namespace TELSA.Messaging.LINE
         /// <param name="date">Date the messages were sent. Timezone: UTC+9</param>
         /// <returns>Information of Sent push messages.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-multicast-messages">Here</a>.</remarks>
-        public async Task<SentMessagesInfo> GetNumberOfSentMulticastMessages(DateTime date)
+        public async Task<MessagingApiResponse<SentMessagesInfo>> GetNumberOfSentMulticastMessagesAsync(DateTime date)
         {
-            return await GetSentMessagesInfo("message/delivery/multicast", date);
+            return await GetSentMessagesInfoAsync("message/delivery/multicast", date);
         }
         
         /// <summary>
@@ -443,9 +435,9 @@ namespace TELSA.Messaging.LINE
         /// <param name="date">Date the messages were sent. Timezone: UTC+9</param>
         /// <returns>Information of Sent push messages.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-number-of-broadcast-messages">Here</a>.</remarks>
-        public async Task<SentMessagesInfo> GetNumberOfSentBroadcastMessages(DateTime date)
+        public async Task<MessagingApiResponse<SentMessagesInfo>> GetNumberOfSentBroadcastMessagesAsync(DateTime date)
         {
-            return await GetSentMessagesInfo("message/delivery/broadcast", date);
+            return await GetSentMessagesInfoAsync("message/delivery/broadcast", date);
         }
         
         #endregion
@@ -464,12 +456,11 @@ namespace TELSA.Messaging.LINE
         /// <param name="userId">User ID that is returned in a <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event object</a>. Do not use the LINE ID found on LINE.</param>
         /// <returns>LINE User Profile.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-profile">Here</a>.</remarks>
-        public async Task<UserProfile> GetProfile(string userId)
+        public async Task<MessagingApiResponse<UserProfile>> GetProfileAsync(string userId)
         {
             var response = await GetAsync($"profile/{userId}");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
             
-            return JsonConvert.DeserializeObject<UserProfile>(json);
+            return new MessagingApiResponse<UserProfile>(response.HttpResponseMessage);
         }
 
         /// <summary>
@@ -481,12 +472,11 @@ namespace TELSA.Messaging.LINE
         /// <param name="start">Value of the continuation token found in the next property of the JSON object returned in the <a href="https://developers.line.biz/en/reference/messaging-api/#get-follower-ids-response">response</a>. Include this parameter to get the next array of user IDs.</param>
         /// <returns>Follower IDs.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-follower-ids">Here</a>.</remarks>
-        public async Task<FollowerIds> GetFollowerIds(string start = null)
+        public async Task<MessagingApiResponse<FollowerIds>> GetFollowerIdsAsync(string start = null)
         {
             var response = await GetAsync($"followers/ids?start={start}");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<FollowerIds>(json);
+            
+            return new MessagingApiResponse<FollowerIds>(response.HttpResponseMessage);
         }
 
         #endregion
@@ -501,14 +491,11 @@ namespace TELSA.Messaging.LINE
         /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
         /// <returns>Number Of Users</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-members-room-count">Here</a>.</remarks>
-        public async Task<long> GetNumberOfUsersInARoom(string roomId)
+        public async Task<MessagingApiResponse<NumberOfUsers>> GetNumberOfUsersInARoomAsync(string roomId)
         {
             var response = await GetAsync($"room/{roomId}/members/count");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-            var type = new {count = 0L};
-            var obj = JsonConvert.DeserializeAnonymousType(json, type);
-
-            return obj.count;
+            
+            return new MessagingApiResponse<NumberOfUsers>(response.HttpResponseMessage);
         }
 
         /// <summary>
@@ -521,12 +508,11 @@ namespace TELSA.Messaging.LINE
         /// <param name="start">Value of the continuation token found in the next property of the JSON object returned in the <a href="https://developers.line.biz/en/reference/messaging-api/#get-room-member-user-ids-response">response</a>. Include this parameter to get the next array of user IDs for the members of the group.</param>
         /// <returns>Member user IDs.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-room-member-user-ids">Here</a>.</remarks>
-        public async Task<MemberUserIds> GetRoomMemberUserIds(string roomId, string start = null)
+        public async Task<MessagingApiResponse<MemberUserIds>> GetRoomMemberUserIdsAsync(string roomId, string start = null)
         {
             var response = await GetAsync($"room/{roomId}/members/ids?start={start}");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<MemberUserIds>(json);
+            
+            return new MessagingApiResponse<MemberUserIds>(response.HttpResponseMessage);
         }
 
         /// <summary>
@@ -536,12 +522,11 @@ namespace TELSA.Messaging.LINE
         /// <param name="userId">User ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>. Do not use the LINE ID used in LINE.</param>
         /// <returns>Member profile.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-room-member-profile">Here</a>.</remarks>
-        public async Task<MemberProfile> GetRoomMemberProfile(string roomId, string userId)
+        public async Task<MessagingApiResponse<MemberProfile>> GetRoomMemberProfileAsync(string roomId, string userId)
         {
             var response = await GetAsync($"room/{roomId}/member/{userId}");
-            var json = await response.HttpResponseMessage.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<MemberProfile>(json);
+            
+            return new MessagingApiResponse<MemberProfile>(response.HttpResponseMessage);
         }
 
         /// <summary>
@@ -550,7 +535,7 @@ namespace TELSA.Messaging.LINE
         /// <param name="roomId">Room ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
         /// <returns>Response.</returns>
         /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#leave-room">Here</a>.</remarks>
-        public async Task<MessagingApiResponse> LeaveRoom(string roomId)
+        public async Task<MessagingApiResponse> LeaveRoomAsync(string roomId)
         {
             return await PostAsync($"room/{roomId}/leave");
         }
