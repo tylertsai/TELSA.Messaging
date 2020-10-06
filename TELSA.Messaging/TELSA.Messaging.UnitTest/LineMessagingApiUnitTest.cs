@@ -161,7 +161,7 @@ namespace TELSA.Messaging.UnitTest
         {
             var retryKey = Guid.NewGuid();
 
-            await _messagingClient.SendBroadcastMessage(
+            await _messagingClient.SendBroadcastMessageAsync(
                 new BroadcastMessage(
                     new List<IMessage>
                     {
@@ -189,19 +189,20 @@ namespace TELSA.Messaging.UnitTest
                 retryKey
             );
 
-            var status = await _messagingClient.GetNarrowcastMessageStatusAsync(sendNarrowcastMessageResponse.Headers.RequestId);
+            var response = await _messagingClient.GetNarrowcastMessageStatusAsync(sendNarrowcastMessageResponse.Headers.RequestId);
+            var requestProgress = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _to,
                 new List<IMessage>
                 {
                     new TextMessage("Get narrowcast message status\n" +
-                                    $"Phase: {status.Phase}\n" +
-                                    $"Success Count: {status.SuccessCount}\n" +
-                                    $"Failure Count: {status.FailureCount}\n" +
-                                    $"Target Count: {status.TargetCount}\n" +
-                                    $"Failed Description: {status.FailedDescription}\n" +
-                                    $"Error Code: {status.ErrorCode}\n")
+                                    $"Phase: {requestProgress.Phase}\n" +
+                                    $"Success Count: {requestProgress.SuccessCount}\n" +
+                                    $"Failure Count: {requestProgress.FailureCount}\n" +
+                                    $"Target Count: {requestProgress.TargetCount}\n" +
+                                    $"Failed Description: {requestProgress.FailedDescription}\n" +
+                                    $"Error Code: {requestProgress.ErrorCode}\n")
                 }
             ));
 
@@ -212,7 +213,7 @@ namespace TELSA.Messaging.UnitTest
         public async Task TestGetContent()
         {
             var messageId = _contentMessageId;
-            var response = await _messagingClient.GetContent(messageId);
+            var response = await _messagingClient.GetContentAsync(messageId);
             var fileExtension = response.HttpResponseMessage.Content.Headers.ContentType.MediaType.Split('/')[1];
 
             await using (var fileStream = new FileStream($"{messageId}.{fileExtension}", FileMode.Create))
@@ -226,15 +227,16 @@ namespace TELSA.Messaging.UnitTest
         [Test]
         public async Task TestGetTheTargetLimitForAdditionalMessages()
         {
-            var response = await _messagingClient.GetTheTargetLimitForAdditionalMessages();
+            var response = await _messagingClient.GetTheTargetLimitForAdditionalMessagesAsync();
+            var messageQuota = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _to,
                 new List<IMessage>
                 {
                     new TextMessage("The target limit for additional messages\n" +
-                                    $"Quota type: {response.Type}\n" +
-                                    $"Quota value: {response.Value}")
+                                    $"Quota type: {messageQuota.Type}\n" +
+                                    $"Quota value: {messageQuota.Value}")
                 }
             ));
         }
@@ -242,13 +244,14 @@ namespace TELSA.Messaging.UnitTest
         [Test]
         public async Task TestGetNumberOfMessagesSentThisMonth()
         {
-            var value = await _messagingClient.GetNumberOfMessagesSentThisMonth();
-
+            var response = await _messagingClient.GetNumberOfMessagesSentThisMonthAsync();
+            var sentStatistic = await response.ReadContentAsync();
+            
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _to,
                 new List<IMessage>
                 {
-                    new TextMessage($"Number of messages sent this month: {value}")
+                    new TextMessage($"Number of messages sent this month: {sentStatistic.TotalUsage}")
                 }
             ));
             
@@ -259,7 +262,8 @@ namespace TELSA.Messaging.UnitTest
         public async Task TestGetNumberOfSentReplyMessages()
         {
             var date = new DateTime(2020, 8, 23);
-            var response = await _messagingClient.GetNumberOfSentReplyMessages(date);
+            var response = await _messagingClient.GetNumberOfSentReplyMessagesAsync(date);
+            var sentMessagesInfo = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _to,
@@ -267,8 +271,8 @@ namespace TELSA.Messaging.UnitTest
                 {
                     new TextMessage("Number of reply messages sent\n" +
                                     $"Date: {date:yyyy-MM-dd}\n" +
-                                    $"Status: {response.Status}\n" +
-                                    $"Success: {response.Success}")
+                                    $"Status: {sentMessagesInfo.Status}\n" +
+                                    $"Success: {sentMessagesInfo.Success}")
                 }
             ));
             
@@ -279,7 +283,8 @@ namespace TELSA.Messaging.UnitTest
         public async Task TestGetNumberOfSentPushMessages()
         {
             var date = new DateTime(2020, 8, 23);
-            var response = await _messagingClient.GetNumberOfSentPushMessages(date);
+            var response = await _messagingClient.GetNumberOfSentPushMessagesAsync(date);
+            var sentMessagesInfo = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _to,
@@ -287,8 +292,8 @@ namespace TELSA.Messaging.UnitTest
                 {
                     new TextMessage("Number of push messages sent\n" +
                                     $"Date: {date:yyyy-MM-dd}\n" +
-                                    $"Status: {response.Status}\n" +
-                                    $"Success: {response.Success}")
+                                    $"Status: {sentMessagesInfo.Status}\n" +
+                                    $"Success: {sentMessagesInfo.Success}")
                 }
             ));
  
@@ -298,7 +303,8 @@ namespace TELSA.Messaging.UnitTest
         public async Task TestGetNumberOfSentMulticastMessages()
         {
             var date = new DateTime(2020, 8, 29);
-            var response = await _messagingClient.GetNumberOfSentMulticastMessages(date);
+            var response = await _messagingClient.GetNumberOfSentMulticastMessagesAsync(date);
+            var sentMessagesInfo = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _to,
@@ -306,8 +312,8 @@ namespace TELSA.Messaging.UnitTest
                 {
                     new TextMessage("Number of multicast messages sent\n" +
                                     $"Date: {date:yyyy-MM-dd}\n" +
-                                    $"Status: {response.Status}\n" +
-                                    $"Success: {response.Success}")
+                                    $"Status: {sentMessagesInfo.Status}\n" +
+                                    $"Success: {sentMessagesInfo.Success}")
                 }
             ));
             
@@ -318,7 +324,8 @@ namespace TELSA.Messaging.UnitTest
         public async Task TestGetNumberOfSentBroadcastMessages()
         {
             var date = new DateTime(2020, 8, 29);
-            var response = await _messagingClient.GetNumberOfSentBroadcastMessages(date);
+            var response = await _messagingClient.GetNumberOfSentBroadcastMessagesAsync(date);
+            var sentMessagesInfo = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _to,
@@ -326,8 +333,8 @@ namespace TELSA.Messaging.UnitTest
                 {
                     new TextMessage("Number of broadcast messages sent\n" +
                                     $"Date: {date:yyyy-MM-dd}\n" +
-                                    $"Status: {response.Status}\n" +
-                                    $"Success: {response.Success}")
+                                    $"Status: {sentMessagesInfo.Status}\n" +
+                                    $"Success: {sentMessagesInfo.Success}")
                 }
             ));
 
@@ -341,7 +348,8 @@ namespace TELSA.Messaging.UnitTest
         [Test]
         public async Task TestGetProfile()
         {
-            var userProfile = await _messagingClient.GetProfile(_to);
+            var response = await _messagingClient.GetProfileAsync(_to);
+            var userProfile = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _to,
@@ -376,8 +384,9 @@ namespace TELSA.Messaging.UnitTest
 
             while (true)
             {
-                var followerIds = await _messagingClient.GetFollowerIds(start);
-
+                var response = await _messagingClient.GetFollowerIdsAsync(start);
+                var followerIds = await response.ReadContentAsync();
+                
                 start = followerIds.Next;
                 followersCount += followerIds.UserIds.Count();
 
@@ -403,13 +412,14 @@ namespace TELSA.Messaging.UnitTest
         [Test]
         public async Task TestGetNumberOfUsersInARoom()
         {
-            var count = await _messagingClient.GetNumberOfUsersInARoom(_roomId);
+            var response = await _messagingClient.GetNumberOfUsersInARoomAsync(_roomId);
+            var numberOfUsers = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _roomId,
                 new List<IMessage>
                 {
-                    new TextMessage($"Total {count} user(s) in the room.")
+                    new TextMessage($"Total {numberOfUsers.Count} user(s) in the room.")
                 })
             );
 
@@ -424,8 +434,9 @@ namespace TELSA.Messaging.UnitTest
 
             while (true)
             {
-                var memberUserIds = await _messagingClient.GetRoomMemberUserIds(_roomId, start);
-
+                var response = await _messagingClient.GetRoomMemberUserIdsAsync(_roomId, start);
+                var memberUserIds = await response.ReadContentAsync();
+                
                 start = memberUserIds.Next;
                 memberCount += memberUserIds.MemberIds.Count();
 
@@ -447,7 +458,8 @@ namespace TELSA.Messaging.UnitTest
         [Test]
         public async Task TestGetRoomMemberProfile()
         {
-            var memberProfile = await _messagingClient.GetRoomMemberProfile(_roomId, _to);
+            var response = await _messagingClient.GetRoomMemberProfileAsync(_roomId, _to);
+            var memberProfile = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
                 _roomId,
@@ -476,7 +488,7 @@ namespace TELSA.Messaging.UnitTest
         [Test]
         public async Task TestLeaveRoom()
         {
-            await _messagingClient.LeaveRoom(_roomId);
+            await _messagingClient.LeaveRoomAsync(_roomId);
 
             Assert.Pass();
         }
