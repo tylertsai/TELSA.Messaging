@@ -572,6 +572,23 @@ namespace TELSA.Messaging.LINE
             return new MessagingApiResponse<NumberOfUsers>(response.HttpResponseMessage);
         }
         
+        /// <summary>
+        /// Gets the user IDs of the members of a group that the bot is in. This includes user IDs of users who have not added the LINE Official Account as a friend or has blocked the LINE Official Account.<br/>
+        /// <br/>
+        /// Note:<br/>
+        /// This feature is available only for verified or premium accounts. For more information about account types, see the Account Types of LINE Official Accout page on LINE for Business.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <param name="start">Value of the continuation token found in the next property of the JSON object returned in the <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-member-user-ids-response">response</a>. Include this parameter to get the next array of user IDs for the members of the group.</param>
+        /// <returns>Member user IDs.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-member-user-ids">Here</a>.</remarks>
+        public async Task<MessagingApiResponse<MemberUserIds>> GetGroupMemberUserIdsAsync(string groupId, string start = null)
+        {
+            var response = await GetAsync($"group/{groupId}/members/ids?start={start}");
+            
+            return new MessagingApiResponse<MemberUserIds>(response.HttpResponseMessage);
+        }
+        
         #endregion
     }
 }

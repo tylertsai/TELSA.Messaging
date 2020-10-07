@@ -546,6 +546,35 @@ namespace TELSA.Messaging.UnitTest
             Assert.Pass();
         }
         
+        [Test]
+        public async Task TestGetGroupMemberUserIds()
+        {
+            var start = string.Empty;
+            var memberCount = 0;
+
+            while (true)
+            {
+                var response = await _messagingClient.GetGroupMemberUserIdsAsync(_groupId, start);
+                var memberUserIds = await response.ReadContentAsync();
+                
+                start = memberUserIds.Next;
+                memberCount += memberUserIds.MemberIds.Count();
+
+                if (string.IsNullOrWhiteSpace(memberUserIds.Next))
+                    break;
+            }
+            
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _groupId,
+                new List<IMessage>
+                {
+                    new TextMessage($"Total {memberCount} member(s) in the group.")
+                })
+            );
+            
+            Assert.Pass();
+        }
+        
         #endregion
     }
 }
