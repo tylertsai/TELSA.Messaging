@@ -541,5 +541,22 @@ namespace TELSA.Messaging.LINE
         }
 
         #endregion
+        
+        #region Group
+
+        /// <summary>
+        /// Gets the group ID, group name, and group icon URL of a group where the LINE Official Account is a member.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Group summary.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-summary">Here</a>.</remarks>
+        public async Task<MessagingApiResponse<Group>> GetGroupSummaryAsync(string groupId)
+        {
+            var response = await GetAsync($"group/{groupId}/summary");
+            
+            return new MessagingApiResponse<Group>(response.HttpResponseMessage);
+        }
+        
+        #endregion
     }
 }

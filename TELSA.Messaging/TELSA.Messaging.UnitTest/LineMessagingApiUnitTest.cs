@@ -19,6 +19,7 @@ namespace TELSA.Messaging.UnitTest
         private readonly string _replyToken;
         private readonly string _contentMessageId;
         private readonly string _roomId;
+        private readonly string _groupId;
         
         public LineMessagingApiUnitTest()
         {
@@ -30,6 +31,7 @@ namespace TELSA.Messaging.UnitTest
             _replyToken = lineSection["ReplyToken"];
             _contentMessageId = lineSection["ContentMessageId"];
             _roomId = lineSection["RoomId"];
+            _groupId = lineSection["GroupId"];
         }
 
         [SetUp]
@@ -493,6 +495,36 @@ namespace TELSA.Messaging.UnitTest
             Assert.Pass();
         }
         
+        [Test]
+        public async Task TestGetGroupSummary()
+        {
+            var response = await _messagingClient.GetGroupSummaryAsync(_groupId);
+            var groupSummary = await response.ReadContentAsync();
+
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _groupId,
+                new List<IMessage>
+                {
+                    new TemplateMessage(
+                        "Group Summary",
+                        new ButtonsTemplate(
+                            groupSummary.GroupName,
+                            new List<IAction>
+                            {
+                                new PostbackAction("ok", "OK")
+                            })
+                        {
+                            Title = "Group Summary",
+                            ThumbnailImageUrl = groupSummary.PictureUrl,
+                            Text = $"{groupSummary.GroupName}"
+                        }
+                    )
+                })
+            );
+            
+            Assert.Pass();
+        }
+
         #endregion
     }
 }
