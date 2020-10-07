@@ -541,5 +541,79 @@ namespace TELSA.Messaging.LINE
         }
 
         #endregion
+        
+        #region Group
+
+        /// <summary>
+        /// Gets the group ID, group name, and group icon URL of a group where the LINE Official Account is a member.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Group summary.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-summary">Here</a>.</remarks>
+        public async Task<MessagingApiResponse<Group>> GetGroupSummaryAsync(string groupId)
+        {
+            var response = await GetAsync($"group/{groupId}/summary");
+            
+            return new MessagingApiResponse<Group>(response.HttpResponseMessage);
+        }
+        
+        /// <summary>
+        /// Gets the count of users in a group. You can get the user in group count even if the user hasn't added the LINE Official Account as a friend or has blocked the LINE Official Account.<br/>
+        /// <br/>
+        /// The number returned excludes the LINE Official Account.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Number Of Users</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-members-group-count">Here</a>.</remarks>
+        public async Task<MessagingApiResponse<NumberOfUsers>> GetNumberOfUsersInAGroupAsync(string groupId)
+        {
+            var response = await GetAsync($"group/{groupId}/members/count");
+            
+            return new MessagingApiResponse<NumberOfUsers>(response.HttpResponseMessage);
+        }
+        
+        /// <summary>
+        /// Gets the user IDs of the members of a group that the bot is in. This includes user IDs of users who have not added the LINE Official Account as a friend or has blocked the LINE Official Account.<br/>
+        /// <br/>
+        /// Note:<br/>
+        /// This feature is available only for verified or premium accounts. For more information about account types, see the Account Types of LINE Official Accout page on LINE for Business.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <param name="start">Value of the continuation token found in the next property of the JSON object returned in the <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-member-user-ids-response">response</a>. Include this parameter to get the next array of user IDs for the members of the group.</param>
+        /// <returns>Member user IDs.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-member-user-ids">Here</a>.</remarks>
+        public async Task<MessagingApiResponse<MemberUserIds>> GetGroupMemberUserIdsAsync(string groupId, string start = null)
+        {
+            var response = await GetAsync($"group/{groupId}/members/ids?start={start}");
+            
+            return new MessagingApiResponse<MemberUserIds>(response.HttpResponseMessage);
+        }
+        
+        /// <summary>
+        /// Gets the user profile of a member of a group that the LINE Official Account is in if the user ID of the group member is known. You can get user profiles of users who haven't added the LINE Official Account as a friend or have blocked the LINE Official Account.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <param name="userId">User ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>. Do not use the LINE ID used in LINE.</param>
+        /// <returns>Member profile.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile">Here</a>.</remarks>
+        public async Task<MessagingApiResponse<MemberProfile>> GetGroupMemberProfileAsync(string groupId, string userId)
+        {
+            var response = await GetAsync($"group/{groupId}/member/{userId}");
+            
+            return new MessagingApiResponse<MemberProfile>(response.HttpResponseMessage);
+        }
+        
+        /// <summary>
+        /// Leaves a <a href="https://developers.line.biz/en/docs/messaging-api/group-chats/#group">group</a>.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Response.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#leave-group">Here</a>.</remarks>
+        public async Task<MessagingApiResponse> LeaveGroupAsync(string groupId)
+        {
+            return await PostAsync($"group/{groupId}/leave");
+        }
+        
+        #endregion
     }
 }
