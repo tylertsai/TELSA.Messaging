@@ -605,6 +605,14 @@ namespace TELSA.Messaging.UnitTest
             Assert.Pass();
         }
         
+        [Test]
+        public async Task TestLeaveGroup()
+        {
+            await _messagingClient.LeaveGroupAsync(_groupId);
+
+            Assert.Pass();
+        }
+        
         #endregion
     }
 }

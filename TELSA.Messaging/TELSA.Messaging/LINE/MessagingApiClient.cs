@@ -603,6 +603,17 @@ namespace TELSA.Messaging.LINE
             return new MessagingApiResponse<MemberProfile>(response.HttpResponseMessage);
         }
         
+        /// <summary>
+        /// Leaves a <a href="https://developers.line.biz/en/docs/messaging-api/group-chats/#group">group</a>.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Response.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#leave-group">Here</a>.</remarks>
+        public async Task<MessagingApiResponse> LeaveGroupAsync(string groupId)
+        {
+            return await PostAsync($"group/{groupId}/leave");
+        }
+        
         #endregion
     }
 }
