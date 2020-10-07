@@ -557,6 +557,21 @@ namespace TELSA.Messaging.LINE
             return new MessagingApiResponse<Group>(response.HttpResponseMessage);
         }
         
+        /// <summary>
+        /// Gets the count of users in a group. You can get the user in group count even if the user hasn't added the LINE Official Account as a friend or has blocked the LINE Official Account.<br/>
+        /// <br/>
+        /// The number returned excludes the LINE Official Account.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <returns>Number Of Users</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-members-group-count">Here</a>.</remarks>
+        public async Task<MessagingApiResponse<NumberOfUsers>> GetNumberOfUsersInAGroupAsync(string groupId)
+        {
+            var response = await GetAsync($"group/{groupId}/members/count");
+            
+            return new MessagingApiResponse<NumberOfUsers>(response.HttpResponseMessage);
+        }
+        
         #endregion
     }
 }

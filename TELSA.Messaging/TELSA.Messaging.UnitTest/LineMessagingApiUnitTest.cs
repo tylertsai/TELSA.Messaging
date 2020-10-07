@@ -495,6 +495,10 @@ namespace TELSA.Messaging.UnitTest
             Assert.Pass();
         }
         
+        #endregion
+        
+        #region Group
+        
         [Test]
         public async Task TestGetGroupSummary()
         {
@@ -524,7 +528,24 @@ namespace TELSA.Messaging.UnitTest
             
             Assert.Pass();
         }
+        
+        [Test]
+        public async Task TestGetNumberOfUsersInAGroup()
+        {
+            var response = await _messagingClient.GetNumberOfUsersInAGroupAsync(_groupId);
+            var numberOfUsers = await response.ReadContentAsync();
 
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _groupId,
+                new List<IMessage>
+                {
+                    new TextMessage($"Total {numberOfUsers.Count} user(s) in the group.")
+                })
+            );
+
+            Assert.Pass();
+        }
+        
         #endregion
     }
 }
