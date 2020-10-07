@@ -15,7 +15,7 @@ namespace TELSA.Messaging.UnitTest
     public class LineMessagingApiUnitTest
     {
         private readonly MessagingApiClient _messagingClient;
-        private readonly string _to;
+        private readonly string _userId;
         private readonly string _replyToken;
         private readonly string _contentMessageId;
         private readonly string _roomId;
@@ -27,7 +27,7 @@ namespace TELSA.Messaging.UnitTest
             var lineSection = config.GetSection("LINE");
 
             _messagingClient = new MessagingApiClient(lineSection["ChannelAccessToken"]);
-            _to = lineSection["ToUserId"];
+            _userId = lineSection["UserId"];
             _replyToken = lineSection["ReplyToken"];
             _contentMessageId = lineSection["ContentMessageId"];
             _roomId = lineSection["RoomId"];
@@ -48,7 +48,7 @@ namespace TELSA.Messaging.UnitTest
 
             await _messagingClient.SendPushMessageAsync(
                 new PushMessage(
-                    _to,
+                    _userId,
                     new List<IMessage>
                     {
                         new TextMessage("This are push messages."),
@@ -72,7 +72,7 @@ namespace TELSA.Messaging.UnitTest
         public async Task TestSender()
         {
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage("Change icon and display name.")
@@ -93,7 +93,7 @@ namespace TELSA.Messaging.UnitTest
         public async Task TestQuickReply()
         {
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage("Choose one Quick Reply action.")
@@ -146,7 +146,7 @@ namespace TELSA.Messaging.UnitTest
 
             await _messagingClient.SendMulticastMessageAsync(
                 new MulticastMessage(
-                    new List<string> {_to, _to},
+                    new List<string> {_userId, _userId},
                     new List<IMessage>
                     {
                         new TextMessage("This is a multicast message.")
@@ -195,7 +195,7 @@ namespace TELSA.Messaging.UnitTest
             var requestProgress = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage("Get narrowcast message status\n" +
@@ -233,7 +233,7 @@ namespace TELSA.Messaging.UnitTest
             var messageQuota = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage("The target limit for additional messages\n" +
@@ -250,7 +250,7 @@ namespace TELSA.Messaging.UnitTest
             var sentStatistic = await response.ReadContentAsync();
             
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage($"Number of messages sent this month: {sentStatistic.TotalUsage}")
@@ -268,7 +268,7 @@ namespace TELSA.Messaging.UnitTest
             var sentMessagesInfo = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage("Number of reply messages sent\n" +
@@ -289,7 +289,7 @@ namespace TELSA.Messaging.UnitTest
             var sentMessagesInfo = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage("Number of push messages sent\n" +
@@ -309,7 +309,7 @@ namespace TELSA.Messaging.UnitTest
             var sentMessagesInfo = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage("Number of multicast messages sent\n" +
@@ -330,7 +330,7 @@ namespace TELSA.Messaging.UnitTest
             var sentMessagesInfo = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage("Number of broadcast messages sent\n" +
@@ -350,11 +350,11 @@ namespace TELSA.Messaging.UnitTest
         [Test]
         public async Task TestGetProfile()
         {
-            var response = await _messagingClient.GetProfileAsync(_to);
+            var response = await _messagingClient.GetProfileAsync(_userId);
             var userProfile = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TemplateMessage(
@@ -397,7 +397,7 @@ namespace TELSA.Messaging.UnitTest
             }
             
             await _messagingClient.SendPushMessageAsync(new PushMessage(
-                _to,
+                _userId,
                 new List<IMessage>
                 {
                     new TextMessage($"Total Followers: {followersCount}")
@@ -460,7 +460,7 @@ namespace TELSA.Messaging.UnitTest
         [Test]
         public async Task TestGetRoomMemberProfile()
         {
-            var response = await _messagingClient.GetRoomMemberProfileAsync(_roomId, _to);
+            var response = await _messagingClient.GetRoomMemberProfileAsync(_roomId, _userId);
             var memberProfile = await response.ReadContentAsync();
 
             await _messagingClient.SendPushMessageAsync(new PushMessage(
@@ -569,6 +569,36 @@ namespace TELSA.Messaging.UnitTest
                 new List<IMessage>
                 {
                     new TextMessage($"Total {memberCount} member(s) in the group.")
+                })
+            );
+            
+            Assert.Pass();
+        }
+        
+        [Test]
+        public async Task TestGetGroupMemberProfile()
+        {
+            var response = await _messagingClient.GetGroupMemberProfileAsync(_groupId, _userId);
+            var memberProfile = await response.ReadContentAsync();
+
+            await _messagingClient.SendPushMessageAsync(new PushMessage(
+                _groupId,
+                new List<IMessage>
+                {
+                    new TemplateMessage(
+                        "Member Profile",
+                        new ButtonsTemplate(
+                            memberProfile.DisplayName,
+                            new List<IAction>
+                            {
+                                new PostbackAction("ok", "OK")
+                            })
+                        {
+                            Title = "Member Profile",
+                            ThumbnailImageUrl = memberProfile.PictureUrl,
+                            Text = $"{memberProfile.DisplayName}"
+                        }
+                    )
                 })
             );
             

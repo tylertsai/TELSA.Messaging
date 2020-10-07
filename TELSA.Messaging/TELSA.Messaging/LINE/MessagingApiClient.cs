@@ -589,6 +589,20 @@ namespace TELSA.Messaging.LINE
             return new MessagingApiResponse<MemberUserIds>(response.HttpResponseMessage);
         }
         
+        /// <summary>
+        /// Gets the user profile of a member of a group that the LINE Official Account is in if the user ID of the group member is known. You can get user profiles of users who haven't added the LINE Official Account as a friend or have blocked the LINE Official Account.
+        /// </summary>
+        /// <param name="groupId">Group ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>.</param>
+        /// <param name="userId">User ID. Found in the source object of <a href="https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects">webhook event objects</a>. Do not use the LINE ID used in LINE.</param>
+        /// <returns>Member profile.</returns>
+        /// <remarks>See <a href="https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile">Here</a>.</remarks>
+        public async Task<MessagingApiResponse<MemberProfile>> GetGroupMemberProfileAsync(string groupId, string userId)
+        {
+            var response = await GetAsync($"group/{groupId}/member/{userId}");
+            
+            return new MessagingApiResponse<MemberProfile>(response.HttpResponseMessage);
+        }
+        
         #endregion
     }
 }
